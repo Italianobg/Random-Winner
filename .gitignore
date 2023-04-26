@@ -4,6 +4,10 @@
 /node_modules
 /.pnp
 .pnp.js
+ca.crt
+ca.key
+cert.crt
+cert.key
 
 # testing
 /coverage
