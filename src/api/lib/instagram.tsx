@@ -21,8 +21,8 @@ export function getInstagramMedia(instagramID: string, token: string) {
     return axiosClient.get('/' + instagramID + '/media?access_token=' + token + '&fields=caption,timestamp,username,permalink&limit=100');
 }
 
-export function getMediaComments(mediaID: string, token: string, fields: string) {
-    return axiosClient.get('/' + mediaID + '/comments?access_token=' + token + '&fields=text,username,replies{text,username,id}' + fields);
+export function getMediaComments(mediaID: string, token: string, after: string) {
+    return axiosClient.get('/' + mediaID + '/comments?access_token=' + token + '&fields=text,username,replies{text,username,id}&limit=50' + after);
 }
 
 

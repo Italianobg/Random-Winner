@@ -21,11 +21,10 @@ function Instagram({ }: Props) {
     const [loadingMedia, setLoadingMedia] = useState(false);
     const [selectedMediaID, setSelectedMediaID] = useState('');
     const [loadingComments, setLoadingComments] = useState(false);
-    const [comments, setComments] = useState<[]>([]);
-    const [fields, setFields] = useState('');
-    const [results, setResults] = useState<Object[]>([]);
-    const [uniqueResults, setUniqueResults] = useState<Object[]>([]);
+    const [comments, setComments] = useState<Object[]>([]);
+    const [commentsAfter, setCommentsAfter] = useState<string>('');
     const [qualifiedResults, setQualifiedResults] = useState<Object[]>([]);
+    const [settings, setSettings] = useState<{ mentions: number, replies: boolean, duplicate: boolean, exclude: string, add: string }>({ mentions: 0, replies: false, duplicate: false, exclude: '', add: '' });
 
     useEffect(() => {
         if (user.id) {
@@ -33,8 +32,6 @@ function Instagram({ }: Props) {
             getUserPages(user.accessToken).then((res) => {
 
                 let Pages: Object[] = [];
-                console.log(res);
-
                 res.data.data.forEach((page: any) => {
                     Pages.push(page)
                 });
@@ -59,21 +56,46 @@ function Instagram({ }: Props) {
     useEffect(() => {
         if (selectedMediaID.length > 0 && selectedMediaID !== 'none') {
             setLoadingComments(true);
-            getMediaComments(selectedMediaID, user.accessToken, fields).then((res) => {
-                console.log(res.data.data);
+            setComments([]);
+            getMediaComments(selectedMediaID, user.accessToken, commentsAfter).then((res: any) => {
                 setComments(res.data.data);
-                setLoadingComments(false);
+                if (res.data.hasOwnProperty('paging') && res.data.paging.cursors.after) {
+                    setCommentsAfter('&after=' + res.data.paging.cursors.after);
+                }
+                if (!res.data.hasOwnProperty('paging')) {
+                    setLoadingComments(false);
+                }
             })
         }
     }, [selectedMediaID])
+
+    useEffect(() => {
+        if (commentsAfter.length > 0) {
+            getMediaComments(selectedMediaID, user.accessToken, commentsAfter).then((res: any) => {
+                let commentsArr = comments;
+                res.data.data.map((comment: any) => { commentsArr.push(comment) });
+                setComments(commentsArr);
+
+                if (res.data.hasOwnProperty('paging') && res.data.paging.cursors.after) {
+                    setCommentsAfter('&after=' + res.data.paging.cursors.after);
+                }
+                if (!res.data.hasOwnProperty('paging')) {
+                    setLoadingComments(false);
+                    setCommentsAfter('');
+                }
+            })
+        }
+
+    }, [commentsAfter])
+
 
 
     return (
         <Wrapper>
             <Accounts loadingUsers={loadingUsers} instagramUsers={instagramUsers} selectedInstagramID={selectedInstagramID} setSelectedInstagramID={setSelectedInstagramID} />
             <Posts loadingMedia={loadingMedia} media={media} setSelectedMediaID={setSelectedMediaID} />
-            <Comments loadingComments={loadingComments} comments={comments} results={results} setResults={setResults} uniqueResults={uniqueResults} setUniqueResults={setUniqueResults} qualifiedResults={qualifiedResults} setQualifiedResults={setQualifiedResults} />
-            <Settings results={results} uniqueResults={uniqueResults} qualifiedResults={qualifiedResults} setQualifiedResults={setQualifiedResults} />
+            <Comments loadingComments={loadingComments} comments={comments} qualifiedResults={qualifiedResults} setQualifiedResults={setQualifiedResults} settings={settings} />
+            <Settings settings={settings} setSettings={setSettings} />
 
             <div>
                 RAFFLE SETTINGS

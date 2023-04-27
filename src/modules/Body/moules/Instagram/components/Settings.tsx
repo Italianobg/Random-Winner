@@ -3,49 +3,50 @@ import styled from 'styled-components'
 import { Header, Instruction } from '../../common.styled'
 
 type Props = {
-    results: Object[],
-    uniqueResults: Object[],
-    qualifiedResults: Object[],
-    setQualifiedResults: Function
+    settings: { mentions: number, replies: boolean, duplicate: boolean, exclude: string, add: string },
+    setSettings: Function
 }
 
-function Settings({ results, uniqueResults, qualifiedResults, setQualifiedResults }: Props) {
-    const [replies, setReplies] = useState<boolean>(false);
-    const [duplicates, setDuplicates] = useState<boolean>(false);
+function Settings({ settings, setSettings }: Props) {
 
-    useEffect(() => {
+    function changeMentions(e: any) {
+        setSettings({ ...settings, mentions: +e.target.value });
+        console.log(settings);
 
-    }, [qualifiedResults])
-
+    }
 
     function toggleReplies(e: any) {
         if (e.target.checked) {
-            setQualifiedResults(uniqueResults)
-            setReplies(true);
+            setSettings({ ...settings, replies: true });
         }
         else {
-            setQualifiedResults(results)
-            setReplies(false);
+            setSettings({ ...settings, replies: false });
         }
     }
 
     function toggleDuplicates(e: any) {
         if (e.target.checked) {
-            setQualifiedResults(uniqueResults)
-            setDuplicates(true);
+            setSettings({ ...settings, duplicate: true });
         }
         else {
-            setQualifiedResults(results)
-            setDuplicates(false);
+            setSettings({ ...settings, duplicate: false });
         }
+    }
+
+    function exclude(e: any) {
+        setSettings({ ...settings, exclude: e.target.value })
+    }
+
+    function add(e: any) {
+        setSettings({ ...settings, add: e.target.value });
     }
 
 
     return (
         <Wrapper>
             <Header>INSTAGRAM GIVEAWAY SETTINGS & FILTERS</Header>
-            <Instruction >Minimum amount of @mentions in 1 commentPremium
-                <input id="number" type="number" />
+            <Instruction >Minimum amount of @mentions in 1 comment:&nbsp;
+                <input id="number" type="number" value={settings.mentions} onChange={(e) => { changeMentions(e) }} />
             </Instruction>
 
             <Instruction>Exclude comment replies
@@ -56,12 +57,12 @@ function Settings({ results, uniqueResults, qualifiedResults, setQualifiedResult
                 <input id="duplicates" type="checkbox" onChange={(e) => { toggleDuplicates(e) }} />
 
             </Instruction>
-            <Instruction >Exclude users
-                <input type="text" id="name" name="name" size={10} />
+            <Instruction >Exclude users<br />
+                <textarea id="exclude" name="exclude" value={settings.exclude} rows={5} cols={50} onChange={(e) => { exclude(e) }} />
 
             </Instruction>
-            <Instruction >Add extra entries
-                <input type="text" id="name" name="name" size={10} />
+            <Instruction >Add extra entries<br />
+                <textarea id="add" name="add" rows={5} cols={50} value={settings.add} onChange={(e) => { add(e) }} />
             </Instruction>
         </Wrapper>
     )
