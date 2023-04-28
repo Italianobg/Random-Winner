@@ -1,18 +1,128 @@
 import React, { useEffect, useState } from 'react'
+import { removeDuplicates } from '../utils/filters'
 import styled from 'styled-components'
 import { Header, Instruction } from '../../common.styled'
 
 type Props = {
+    results: Object[],
     settings: { mentions: number, replies: boolean, duplicate: boolean, exclude: string, add: string },
-    setSettings: Function
+    setSettings: Function,
+    setQualifiedResults: Function,
+    setUniqueQualifiedResults: Function,
 }
 
-function Settings({ settings, setSettings }: Props) {
+function Settings({ results, settings, setSettings, setQualifiedResults, setUniqueQualifiedResults }: Props) {
+
+    const mentions = [0, 1, 2, 3, 4, 5];
+
+    useEffect(() => {
+        let temp: Object[] = [];
+
+        temp = results;
+        if (settings.replies) {
+            temp = temp.filter((res: any) => res.type !== 'r');
+        }
+
+        if (settings.mentions > 0) {
+            temp = temp.filter((res: any) => {
+                let textArr = res.text.split(' ');
+                let counter = 0;
+                textArr.forEach((word: string) => {
+                    if (word.startsWith('@') && word.length > 1) {
+                        counter++;
+                    }
+                });
+                if (counter >= settings.mentions) {
+                    return true;
+                }
+                else return false;
+            });
+        }
+
+        if (settings.duplicate) {
+            temp = removeDuplicates(temp);
+        }
+
+        let addArray: string[] = []
+
+        temp = temp.filter((resulta: any) => { return resulta.type !== 'a' })
+        addArray = settings.add.split('\n');
+        addArray = addArray.filter((participant) => { if (participant.length === 0 || participant === '@') return false; else return true; }).map((participant) => { if (participant.startsWith('@')) { return participant.slice(1) } else return participant })
+
+        if (addArray.length > 0) {
+            addArray.forEach(participant => {
+                temp.push({ username: participant, type: 'a' });
+            })
+        }
+
+        console.log(temp);
+
+
+        let excludeArray: string[] = []
+        excludeArray = settings.exclude.split('\n');
+        excludeArray = excludeArray.filter((participant) => { if (participant.length === 0 || participant === '@') return false; else return true; }).map((participant) => { if (participant.startsWith('@')) { return participant.slice(1) } else return participant })
+        console.log(excludeArray);
+
+        if (excludeArray.length > 0) {
+            temp = temp.filter((participant: any) => { if (excludeArray.includes(participant.username)) { return false } else return true; })
+        }
+
+
+        setQualifiedResults(temp)
+        setUniqueQualifiedResults(removeDuplicates(temp));
+
+    }, [results, settings])
+
+    useEffect(() => {
+        let temp: Object[] = [];
+
+
+
+        temp.forEach((result: any) => {
+            if (result.type === 'a') {
+                temp.splice(temp.indexOf(result), 1);
+            }
+        });
+        console.log("Settings", temp);
+        // if (settings.exclude) {
+        //     let excludeArray = settings.exclude.split('\n').map((element: any) => {
+        //         if (element.startsWith('@')) { return element.slice(1) }
+        //         else return element;
+        //     });
+        //     temp.forEach((participant: any) => {
+        //         if (excludeArray.includes(participant.username)) {
+        //             temp.splice(temp.indexOf(participant), 1);
+        //         }
+        //     });
+        // }
+
+        let addArray = settings.add.split('\n');
+
+        if (addArray.length > 0) {
+            addArray.forEach(participant => {
+                if (participant.startsWith('@')) {
+                    if (participant.slice(1).length > 0) {
+                        temp.push({ username: participant.slice(1), type: 'a' })
+                    }
+                }
+                else {
+                    if (participant.length > 0) {
+                        temp.push({ username: participant, type: 'a' })
+                    }
+                }
+            })
+        }
+
+
+    }, [settings.exclude])
+
+    // useEffect(() => {
+    //     setQualifiedResults(finalResults)
+    //     setUniqueQualifiedResults(removeDuplicates(finalResults));
+    // }, [finalResults])
 
     function changeMentions(e: any) {
         setSettings({ ...settings, mentions: +e.target.value });
-        console.log(settings);
-
     }
 
     function toggleReplies(e: any) {
@@ -46,7 +156,11 @@ function Settings({ settings, setSettings }: Props) {
         <Wrapper>
             <Header>INSTAGRAM GIVEAWAY SETTINGS & FILTERS</Header>
             <Instruction >Minimum amount of @mentions in 1 comment:&nbsp;
-                <input id="number" type="number" value={settings.mentions} onChange={(e) => { changeMentions(e) }} />
+                <select name="mentions" id="mentions" onChange={(e) => {
+                    changeMentions(e)
+                }}> {mentions.map((number: any) => {
+                    return <option key={number} value={number} >{number}</option >
+                })}</select>
             </Instruction>
 
             <Instruction>Exclude comment replies

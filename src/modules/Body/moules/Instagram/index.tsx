@@ -23,7 +23,9 @@ function Instagram({ }: Props) {
     const [loadingComments, setLoadingComments] = useState(false);
     const [comments, setComments] = useState<Object[]>([]);
     const [commentsAfter, setCommentsAfter] = useState<string>('');
+    const [results, setResults] = useState<Object[]>([]);
     const [qualifiedResults, setQualifiedResults] = useState<Object[]>([]);
+    const [uniqueQualifiedResults, setUniqueQualifiedResults] = useState<Object[]>([]);
     const [settings, setSettings] = useState<{ mentions: number, replies: boolean, duplicate: boolean, exclude: string, add: string }>({ mentions: 0, replies: false, duplicate: false, exclude: '', add: '' });
 
     useEffect(() => {
@@ -88,14 +90,12 @@ function Instagram({ }: Props) {
 
     }, [commentsAfter])
 
-
-
     return (
         <Wrapper>
             <Accounts loadingUsers={loadingUsers} instagramUsers={instagramUsers} selectedInstagramID={selectedInstagramID} setSelectedInstagramID={setSelectedInstagramID} />
             <Posts loadingMedia={loadingMedia} media={media} setSelectedMediaID={setSelectedMediaID} />
-            <Comments loadingComments={loadingComments} comments={comments} qualifiedResults={qualifiedResults} setQualifiedResults={setQualifiedResults} settings={settings} />
-            <Settings settings={settings} setSettings={setSettings} />
+            <Comments loadingComments={loadingComments} comments={comments} results={results} setResults={setResults} qualifiedResults={qualifiedResults} uniqueQualifiedResults={uniqueQualifiedResults} setSettings={setSettings} />
+            <Settings results={results} settings={settings} setSettings={setSettings} setQualifiedResults={setQualifiedResults} setUniqueQualifiedResults={setUniqueQualifiedResults} />
 
             <div>
                 RAFFLE SETTINGS

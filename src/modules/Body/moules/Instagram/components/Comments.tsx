@@ -6,31 +6,36 @@ import { removeDuplicates } from '../utils/filters'
 type Props = {
     loadingComments: boolean,
     comments: Object[],
+    results: Object[],
+    setResults: Function,
     qualifiedResults: Object[],
-    setQualifiedResults: Function,
-    settings: { mentions: number, replies: boolean, duplicate: boolean, exclude: string, add: string },
+    uniqueQualifiedResults: Object[],
+    setSettings: Function
 }
 
 
 function Comments({
     loadingComments,
     comments,
+    results,
+    setResults,
     qualifiedResults,
-    setQualifiedResults,
-    settings
+    uniqueQualifiedResults,
+    setSettings
 }: Props) {
 
-    const [results, setResults] = useState<Object[]>([]);
     const [uniqueResults, setUniqueResults] = useState<Object[]>([]);
-    const [uniqueQualifiedResults, setUniqueQualifiedResults] = useState<Object[]>([]);
 
 
     useEffect(() => {
-        console.log(comments);
-        let temp: Object[] = [];
-        let tempResults: Object[] = [];
+        setSettings({ mentions: 0, replies: false, duplicate: false, exclude: '', add: '' })
+    }, [comments])
 
-        if (loadingComments === false && comments.length > 0) {
+    useEffect(() => {
+
+        let temp: Object[] = [];
+
+        if (comments.length > 0 && loadingComments === false) {
 
             comments.forEach((comment: any) => {
                 let obj = { id: comment.id, username: comment.username, text: comment.text, type: 'c' }
@@ -48,72 +53,8 @@ function Comments({
             // uniqueResults = results unique usernames
             setUniqueResults(removeDuplicates(temp));
 
-            tempResults = results;
-
-            if (settings.replies) {
-                temp = tempResults.filter((res: any) => res.type !== 'r');
-                tempResults = temp;
-            }
-
-            if (settings.mentions > 0) {
-                temp = tempResults.filter((res: any) => {
-                    let textArr = res.text.split(' ');
-                    let counter = 0;
-                    textArr.forEach((word: string) => {
-                        if (word.startsWith('@') && word.length > 1) {
-                            counter++;
-                        }
-                    });
-                    if (counter >= settings.mentions) {
-                        return true;
-                    }
-                    else return false;
-                });
-                tempResults = temp;
-            }
-
-            if (settings.duplicate) {
-                temp = removeDuplicates(tempResults);
-                tempResults = temp;
-            }
-
-            if (settings.exclude.length > 0) {
-                let excludeArray = settings.exclude.split('\n').map((element: any) => {
-                    if (element.startsWith('@')) { return element.slice(1) }
-                    else return element;
-                });
-                temp = tempResults;
-                temp.forEach((participant: any) => {
-                    if (excludeArray.includes(participant.username)) {
-                        temp.splice(temp.indexOf(participant), 1);
-                    }
-                });
-                tempResults = temp;
-            }
-
-            if (settings.add.length > 0) {
-                let addArray = settings.add.split('\n');
-
-                addArray.forEach(participant => {
-                    if (participant.startsWith('@')) {
-                        if (participant.slice(1).length > 0) {
-                            tempResults.push({ username: participant.slice(1), type: 'a' })
-                        }
-                    }
-                    else {
-                        if (participant.length > 0) {
-                            tempResults.push({ username: participant, type: 'a' })
-                        }
-                    }
-                });
-
-            }
-
-            setQualifiedResults(tempResults);
-            setUniqueQualifiedResults(removeDuplicates(tempResults));
         }
-    }, [comments, loadingComments, settings])
-
+    }, [comments, loadingComments])
 
     return (
         <Wrapper>
