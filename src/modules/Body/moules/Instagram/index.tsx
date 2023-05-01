@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components';
-import { UserContext } from '../../../../provider/Profile';
+import { Profile, UserContext } from '../../../../provider/Profile';
 import { getInstagramMedia, getMediaComments, getUserPages } from '../../../../api/lib/instagram';
 import Accounts from './components/Accounts';
 import Posts from './components/Posts';
 import Settings from './components/Settings';
 import Comments from './components/Comments';
+import Raffle from './components/Raffle';
 
 type Props = {}
 
 function Instagram({ }: Props) {
 
-    const { user } = useContext(UserContext);
+    const { user, setUserData } = useContext(UserContext);
 
     const [pageIDs, setPageIDs] = useState<Object[]>([]);
     const [instagramUsers, setInstagramUsers] = useState<Object[]>([]);
@@ -32,6 +33,7 @@ function Instagram({ }: Props) {
         if (user.id) {
             setLoadingUsers(true);
             getUserPages(user.accessToken).then((res) => {
+                console.log(res.data.data);
 
                 let Pages: Object[] = [];
                 res.data.data.forEach((page: any) => {
@@ -42,6 +44,13 @@ function Instagram({ }: Props) {
                 setInstagramUsers(instagramPages);
                 setLoadingUsers(false);
             })
+                .catch((err) => {
+                    if (err.response.data.error.message.includes('Session has expired')) {
+                        setUserData({} as Profile);
+                        setInstagramUsers([]);
+                        setLoadingUsers(false);
+                    }
+                })
         }
     }, [user])
 
@@ -96,12 +105,7 @@ function Instagram({ }: Props) {
             <Posts loadingMedia={loadingMedia} media={media} setSelectedMediaID={setSelectedMediaID} />
             <Comments loadingComments={loadingComments} comments={comments} results={results} setResults={setResults} qualifiedResults={qualifiedResults} uniqueQualifiedResults={uniqueQualifiedResults} setSettings={setSettings} />
             <Settings results={results} settings={settings} setSettings={setSettings} setQualifiedResults={setQualifiedResults} setUniqueQualifiedResults={setUniqueQualifiedResults} />
-
-            <div>
-                RAFFLE SETTINGS
-                Hide comment from results
-                Remove winner after it is chosen
-            </div>
+            <Raffle qualifiedResults={qualifiedResults} setQualifiedResults={setQualifiedResults} ></Raffle>
         </Wrapper >
     )
 }

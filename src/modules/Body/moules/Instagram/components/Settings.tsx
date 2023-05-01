@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { removeDuplicates } from '../utils/filters'
 import styled from 'styled-components'
 import { Header, Instruction } from '../../common.styled'
@@ -47,7 +47,7 @@ function Settings({ results, settings, setSettings, setQualifiedResults, setUniq
 
         temp = temp.filter((resulta: any) => { return resulta.type !== 'a' })
         addArray = settings.add.split('\n');
-        addArray = addArray.filter((participant) => { if (participant.length === 0 || participant === '@') return false; else return true; }).map((participant) => { if (participant.startsWith('@')) { return participant.slice(1) } else return participant })
+        addArray = addArray.filter((participant) => { if (participant.length === 0 || participant === '@' || participant.trim().length === 0) return false; else return true; }).map((participant) => { if (participant.startsWith('@')) { return participant.slice(1) } else return participant })
 
         if (addArray.length > 0) {
             addArray.forEach(participant => {
@@ -55,13 +55,9 @@ function Settings({ results, settings, setSettings, setQualifiedResults, setUniq
             })
         }
 
-        console.log(temp);
-
-
         let excludeArray: string[] = []
         excludeArray = settings.exclude.split('\n');
         excludeArray = excludeArray.filter((participant) => { if (participant.length === 0 || participant === '@') return false; else return true; }).map((participant) => { if (participant.startsWith('@')) { return participant.slice(1) } else return participant })
-        console.log(excludeArray);
 
         if (excludeArray.length > 0) {
             temp = temp.filter((participant: any) => { if (excludeArray.includes(participant.username)) { return false } else return true; })
@@ -73,53 +69,7 @@ function Settings({ results, settings, setSettings, setQualifiedResults, setUniq
 
     }, [results, settings])
 
-    useEffect(() => {
-        let temp: Object[] = [];
 
-
-
-        temp.forEach((result: any) => {
-            if (result.type === 'a') {
-                temp.splice(temp.indexOf(result), 1);
-            }
-        });
-        console.log("Settings", temp);
-        // if (settings.exclude) {
-        //     let excludeArray = settings.exclude.split('\n').map((element: any) => {
-        //         if (element.startsWith('@')) { return element.slice(1) }
-        //         else return element;
-        //     });
-        //     temp.forEach((participant: any) => {
-        //         if (excludeArray.includes(participant.username)) {
-        //             temp.splice(temp.indexOf(participant), 1);
-        //         }
-        //     });
-        // }
-
-        let addArray = settings.add.split('\n');
-
-        if (addArray.length > 0) {
-            addArray.forEach(participant => {
-                if (participant.startsWith('@')) {
-                    if (participant.slice(1).length > 0) {
-                        temp.push({ username: participant.slice(1), type: 'a' })
-                    }
-                }
-                else {
-                    if (participant.length > 0) {
-                        temp.push({ username: participant, type: 'a' })
-                    }
-                }
-            })
-        }
-
-
-    }, [settings.exclude])
-
-    // useEffect(() => {
-    //     setQualifiedResults(finalResults)
-    //     setUniqueQualifiedResults(removeDuplicates(finalResults));
-    // }, [finalResults])
 
     function changeMentions(e: any) {
         setSettings({ ...settings, mentions: +e.target.value });
@@ -187,6 +137,27 @@ const Wrapper = styled.div`
     border-radius: 10px;
     padding: 2% 3%;
     margin-top: 1%;
+
+    select{
+        width: 20%;
+        font-size: 18px;
+        padding: 0.7%;
+        border: 1px solid #fab1becf;
+        border-radius: 4px;
+    }
+    textarea{
+        width: 60%;
+        font-size: 18px;
+        padding: 0.7%;
+        border: 1px solid #fab1becf;
+        border-radius: 4px;
+    }
+    input{
+        font-size: 18px;
+        padding: 0.7%;
+        border: 1px solid #fab1becf;
+        border-radius: 4px;
+    }
 `
 
 export default Settings
