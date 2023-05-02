@@ -12,3 +12,11 @@ export function removeDuplicates(arr: Object[]): Object[] {
     })
     return uniqueArr;
 }
+
+export function generateRandom(maxLimit: any) {
+    let rand = Math.random() * maxLimit;
+
+    rand = Math.floor(rand);
+
+    return rand;
+}

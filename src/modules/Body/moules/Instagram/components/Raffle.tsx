@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Header, Instruction } from '../../common.styled'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
+import { generateRandom } from '../utils';
 
 type Props = { qualifiedResults: Object[], setQualifiedResults: Function }
 
@@ -9,8 +10,9 @@ function Raffle({ qualifiedResults, setQualifiedResults }: Props) {
 
     const [hide, setHide] = useState<boolean>(false);
     const [remove, setRemove] = useState<boolean>(false);
-    const [participant, setParticipant] = useState<any>();
-    let index = 0;
+    const [winners, setWinners] = useState<Object[]>([]);
+    const [participant, setParticipant] = useState<any>({ username: '', text: '' });
+    let randomCycles: number = 0;
     let start = useRef<ReturnType<typeof setInterval> | null>(null);
 
     function toggleHide(e: any) {
@@ -32,19 +34,24 @@ function Raffle({ qualifiedResults, setQualifiedResults }: Props) {
     }
 
     function getParticipant() {
+        let index = generateRandom(qualifiedResults.length);
         setParticipant(qualifiedResults[index]);
-        if (index === qualifiedResults.length - 1) {
-            index = 0;
-        } else index++;
+        randomCycles++;
+        if (randomCycles === 40) {
+            randomCycles = 0;
+            clearInterval(start.current as NodeJS.Timeout);
+            let winnersArr = winners;
+            winnersArr.push(qualifiedResults[index]);
+            setWinners(winnersArr);
+            let tempArr = qualifiedResults;
+            tempArr.splice(qualifiedResults.indexOf(qualifiedResults[index]), 1);
+            setQualifiedResults(tempArr);
+        }
     }
 
     const startRaffle = () => {
-        const id = setInterval(getParticipant, 250);
+        const id = setInterval(getParticipant, 150);
         start.current = id;
-    }
-
-    const pickWinner = () => {
-        clearInterval(start.current as NodeJS.Timeout);
     }
 
 
@@ -59,17 +66,21 @@ function Raffle({ qualifiedResults, setQualifiedResults }: Props) {
                 <input id="remove" type="checkbox" onChange={(e) => { toggleRemove(e) }} />
             </Instruction>
 
-            <Button onClick={startRaffle}>Start</Button>
+            <Button onClick={startRaffle}>Pick Winner</Button>
 
-            {
-                participant
-                    ? <UserBox>
-                        <Name><Link to={`https://instagram.com/${participant.username}`}>@{participant.username}</Link></Name>
-                        {!hide ? <Bio>{participant.text.slice(0, 40)}</Bio> : ''}
-                    </UserBox>
-                    : ''
-            }
-            <Button onClick={pickWinner}>Pick Winner</Button>
+            <WinnerBox>
+                <Name><Link to={`https://instagram.com/${participant.username}`}>@{participant.username}</Link></Name>
+                {!hide ? <Bio>{participant.text.length < 80 ? participant.text : participant.text.slice(0, 80) + '...'}</Bio> : ''}
+            </WinnerBox>
+
+            {winners.length > 0 ? <Instruction >Winners
+                <Winners>
+                    {winners.map((winner: any, index: any) => {
+                        return <UserBox key={index}>#{index + 1}<Name><Link to={`https://instagram.com/${winner.username}`}>@{winner.username}</Link></Name>
+                            {!hide ? <Bio>{winner.text.length < 80 ? winner.text : winner.text.slice(0, 80) + '...'}</Bio> : ''}</UserBox>
+                    })}
+                </Winners>
+            </Instruction> : ''}
 
         </Wrapper >
     )
@@ -99,7 +110,7 @@ const UserBox = styled.div`
     background-color: #ffd3db44;
     border-radius: 5px;
     width: 30%;
-    height: 360px;
+   
     margin: 1%;
     box-sizing: border-box;
     padding: 9px 4px 4px 4px;
@@ -109,6 +120,10 @@ const UserBox = styled.div`
         border: 1px solid #fab1becf;
         background-color: #ffd3dbca;
     }
+`
+
+const WinnerBox = styled(UserBox)`
+   height: 150px; 
 `
 
 const Name = styled.div`
@@ -123,6 +138,11 @@ const Bio = styled.div`
     margin-top: 1%;
     text-align: justify;
     padding: 6%;
+`
+
+const Winners = styled.div`
+    display: flex;
+    flex-wrap: wrap;
 `
 
 export default Raffle

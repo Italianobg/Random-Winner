@@ -1,7 +1,7 @@
 import React, { useEffect, useState, } from 'react'
 import { Header, Instruction } from '../../common.styled'
 import styled from 'styled-components'
-import { removeDuplicates } from '../utils/filters'
+import { removeDuplicates } from '../utils'
 
 type Props = {
     loadingComments: boolean,

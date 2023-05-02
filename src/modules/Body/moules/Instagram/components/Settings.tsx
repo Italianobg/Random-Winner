@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { removeDuplicates } from '../utils/filters'
+import { removeDuplicates } from '../utils'
 import styled from 'styled-components'
 import { Header, Instruction } from '../../common.styled'
 
