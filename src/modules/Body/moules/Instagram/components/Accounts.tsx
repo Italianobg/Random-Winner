@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Header, Instruction } from '../../common.styled';
+import { Header, Instruction, Minus, Plus } from '../../common.styled';
+import { UserContext } from '../../../../../provider/Profile';
 
 type Props = {
     loadingUsers: boolean,
@@ -10,7 +11,7 @@ type Props = {
 }
 
 function Accounts({ loadingUsers, instagramUsers, selectedInstagramID, setSelectedInstagramID }: Props) {
-
+    const { user, setUserData } = useContext(UserContext);
     const [display, setDisplay] = useState('show');
 
     function toggle() {
@@ -34,19 +35,22 @@ function Accounts({ loadingUsers, instagramUsers, selectedInstagramID, setSelect
                 <Minus className={display}>—</Minus>
                 <Plus className={display}>+</Plus>
             </Header>
-            <Instruction className={display}>Connected Instagram accounts:</Instruction>
-            {loadingUsers ? 'Loading' : <div>
-                {
-                    instagramUsers.length > 0 ? <Pages className={display}>{instagramUsers.map((instagramUser: any) => {
-                        return <UserBox key={instagramUser.instagram_business_account.id} className={instagramUser.instagram_business_account.id === selectedInstagramID ? 'selected' : ''} onClick={() => {
-                            setSelectedInstagramID(instagramUser.instagram_business_account.id)
-                        }}><Name>{instagramUser.instagram_business_account.name}</Name>
-                            <Image><img src={instagramUser.instagram_business_account.profile_picture_url} alt="Page Image" /></Image>
-                            <Followers>Followers: {instagramUser.instagram_business_account.followers_count}</Followers>
-                            <Bio>{instagramUser.instagram_business_account.biography}</Bio>
-                        </UserBox>
-                    })}</Pages> : 'No Linked Instagram Pages'
-                }</div>}
+            {user.accessToken === undefined ? "Please login with your facebook account" :
+                <div><Instruction className={display}>Connected Instagram accounts:</Instruction>
+                    {loadingUsers ? 'Loading' : <div>
+                        {
+                            instagramUsers.length > 0 ? <Pages className={display}>{instagramUsers.map((instagramUser: any) => {
+                                return <UserBox key={instagramUser.instagram_business_account.id} className={instagramUser.instagram_business_account.id === selectedInstagramID ? 'selected' : ''} onClick={() => {
+                                    setSelectedInstagramID(instagramUser.instagram_business_account.id)
+                                }}><Name>{instagramUser.instagram_business_account.name}</Name>
+                                    <Image><img src={instagramUser.instagram_business_account.profile_picture_url} alt="Page Image" /></Image>
+                                    <Followers>Followers: {instagramUser.instagram_business_account.followers_count}</Followers>
+                                    <Bio>{instagramUser.instagram_business_account.biography}</Bio>
+                                </UserBox>
+                            })}</Pages> : 'No Linked Instagram Pages'
+                        }
+                    </div>}
+                </div>}
         </Wrapper>
     )
 }
@@ -57,23 +61,6 @@ const Wrapper = styled.div`
     padding: 2% 3%;
     margin-top: 1%;
     `
-
-const Minus = styled.div`
-    &.show{
-        display: flex;
-    }
-    &.hide{
-        display: none;
-    }
-`
-const Plus = styled.div`
-    &.show{
-        display: none;
-    }
-    &.hide{
-        display: flex;
-    }
-`
 
 const Pages = styled.div`
     display: flex;

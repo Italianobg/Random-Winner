@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Header, Instruction } from '../../common.styled'
+import { Header, Instruction, Minus, Plus } from '../../common.styled'
 
 type Props = {
     loadingMedia: boolean,
@@ -9,23 +9,45 @@ type Props = {
 }
 
 function Posts({ loadingMedia, media, setSelectedMediaID }: Props) {
+
+    const [display, setDisplay] = useState('hide');
+
+    function toggle() {
+        if (display === 'hide')
+            setDisplay('show');
+        else
+            setDisplay('hide')
+    }
+
+    useEffect(() => {
+        if (media.length > 0) {
+            setDisplay('show');
+        }
+    }, [media])
+
+
     return (
         <Wrapper>
-            <Header>INSTAGRAM POSTS</Header>
-            <Instruction>Your Instagram posts</Instruction>
+            <Header onClick={() => { toggle() }}>
+                <span>INSTAGRAM POSTS</span>
+                <Minus className={display}>—</Minus>
+                <Plus className={display}>+</Plus>
+            </Header>
+            <Content className={display}>
+                <Instruction>Your Instagram posts</Instruction>
 
-            {loadingMedia ? 'Loading'
-                : <>
-                    {media.length > 0 ?
-                        <select name="posts" id="posts" onChange={(e) => {
-                            setSelectedMediaID(e.target.value)
-                        }}><option key='select' value='none' >Select Post</option>
-                            {media.map((post: any) => {
-                                return <option key={post.id} value={post.id} >{post.caption.slice(0, 80) + '...'}</option >
-                            })}</select>
-                        : 'No Posts'}
-                </>}
-
+                {loadingMedia ? 'Loading'
+                    : <>
+                        {media.length > 0 ?
+                            <select name="posts" id="posts" onChange={(e) => {
+                                setSelectedMediaID(e.target.value)
+                            }}><option key='select' value='none' >Select Post</option>
+                                {media.map((post: any) => {
+                                    return <option key={post.id} value={post.id} >{post.caption.slice(0, 80) + '...'}</option >
+                                })}</select>
+                            : 'No Posts'}
+                    </>}
+            </Content>
         </Wrapper>
     )
 }
@@ -42,6 +64,15 @@ const Wrapper = styled.div`
             padding: 0.7%;
             border: 1px solid #fab1becf;
             border-radius: 4px;
+    }
+            `
+
+const Content = styled.div`
+    &.show{
+        display: block;
+    }
+    &.hide{
+        display: none;
     }
             `
 

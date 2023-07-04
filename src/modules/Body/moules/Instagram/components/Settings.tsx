@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { removeDuplicates } from '../utils'
 import styled from 'styled-components'
-import { Header, Instruction } from '../../common.styled'
+import { Header, Instruction, Minus, Plus } from '../../common.styled'
 
 type Props = {
     results: Object[],
@@ -14,6 +14,22 @@ type Props = {
 function Settings({ results, settings, setSettings, setQualifiedResults, setUniqueQualifiedResults }: Props) {
 
     const mentions = [0, 1, 2, 3, 4, 5];
+    const [display, setDisplay] = useState('hide');
+
+    function toggle() {
+        if (display === 'hide')
+            setDisplay('show');
+        else
+            setDisplay('hide')
+    }
+
+    useEffect(() => {
+        if (results.length > 0) {
+            setDisplay('show');
+        }
+    }, [results])
+
+
 
     useEffect(() => {
         let temp: Object[] = [];
@@ -51,7 +67,7 @@ function Settings({ results, settings, setSettings, setQualifiedResults, setUniq
 
         if (addArray.length > 0) {
             addArray.forEach(participant => {
-                temp.push({ username: participant, type: 'a' });
+                temp.push({ username: participant, type: 'a', text: '' });
             })
         }
 
@@ -104,30 +120,36 @@ function Settings({ results, settings, setSettings, setQualifiedResults, setUniq
 
     return (
         <Wrapper>
-            <Header>INSTAGRAM GIVEAWAY SETTINGS & FILTERS</Header>
-            <Instruction >Minimum amount of @mentions in 1 comment:&nbsp;
-                <select name="mentions" id="mentions" onChange={(e) => {
-                    changeMentions(e)
-                }}> {mentions.map((number: any) => {
-                    return <option key={number} value={number} >{number}</option >
-                })}</select>
-            </Instruction>
+            <Header onClick={() => { toggle() }}>
+                <span>INSTAGRAM GIVEAWAY SETTINGS & FILTERS</span>
+                <Minus className={display}>—</Minus>
+                <Plus className={display}>+</Plus>
+            </Header>
+            <Content className={display}>
+                <Instruction >Minimum amount of @mentions in 1 comment:&nbsp;
+                    <select name="mentions" id="mentions" onChange={(e) => {
+                        changeMentions(e)
+                    }}> {mentions.map((number: any) => {
+                        return <option key={number} value={number} >{number}</option >
+                    })}</select>
+                </Instruction>
 
-            <Instruction>Exclude comment replies
-                <input id="replies" type="checkbox" onChange={(e) => { toggleReplies(e) }} />
+                <Instruction>Exclude comment replies
+                    <input id="replies" type="checkbox" onChange={(e) => { toggleReplies(e) }} />
 
-            </Instruction>
-            <Instruction >Filter duplicate users
-                <input id="duplicates" type="checkbox" onChange={(e) => { toggleDuplicates(e) }} />
+                </Instruction>
+                <Instruction >Filter duplicate users
+                    <input id="duplicates" type="checkbox" onChange={(e) => { toggleDuplicates(e) }} />
 
-            </Instruction>
-            <Instruction >Exclude users<br />
-                <textarea id="exclude" name="exclude" value={settings.exclude} rows={5} cols={50} onChange={(e) => { exclude(e) }} />
+                </Instruction>
+                <Instruction >Exclude users<br />
+                    <textarea id="exclude" name="exclude" value={settings.exclude} rows={5} cols={50} onChange={(e) => { exclude(e) }} />
 
-            </Instruction>
-            <Instruction >Add extra entries<br />
-                <textarea id="add" name="add" rows={5} cols={50} value={settings.add} onChange={(e) => { add(e) }} />
-            </Instruction>
+                </Instruction>
+                <Instruction >Add extra entries<br />
+                    <textarea id="add" name="add" rows={5} cols={50} value={settings.add} onChange={(e) => { add(e) }} />
+                </Instruction>
+            </Content>
         </Wrapper>
     )
 }
@@ -157,6 +179,15 @@ const Wrapper = styled.div`
         padding: 0.7%;
         border: 1px solid #fab1becf;
         border-radius: 4px;
+    }
+`
+
+const Content = styled.div`
+    &.show{
+        display: block;
+    }
+    &.hide{
+        display: none;
     }
 `
 

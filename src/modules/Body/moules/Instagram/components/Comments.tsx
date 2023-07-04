@@ -1,5 +1,5 @@
 import React, { useEffect, useState, } from 'react'
-import { Header, Instruction } from '../../common.styled'
+import { Header, Instruction, Minus, Plus } from '../../common.styled'
 import styled from 'styled-components'
 import { removeDuplicates } from '../utils'
 
@@ -25,6 +25,20 @@ function Comments({
 }: Props) {
 
     const [uniqueResults, setUniqueResults] = useState<Object[]>([]);
+    const [display, setDisplay] = useState('hide');
+
+    function toggle() {
+        if (display === 'hide')
+            setDisplay('show');
+        else
+            setDisplay('hide')
+    }
+
+    useEffect(() => {
+        if (comments.length > 0) {
+            setDisplay('show');
+        }
+    }, [comments])
 
 
     useEffect(() => {
@@ -58,27 +72,33 @@ function Comments({
 
     return (
         <Wrapper>
-            <Header>INSTAGRAM COMMENTS</Header>
-            <Instruction>Comments Stats</Instruction>
-            {loadingComments ? "Loading" : <Content>
-                <Box><Title><i>Unique users</i></Title><Count>{uniqueResults.length}</Count></Box>
-                <Box><Title><i>Comments</i></Title><Count>{results.filter((rec: any) => rec.type === 'c').length}</Count></Box>
-                <Box><Title><i>Replies</i></Title><Count>{results.filter((rec: any) => rec.type === 'r').length}</Count></Box>
-                <Box><Title><i>Total Comments</i></Title><Count>{results.length}</Count></Box></Content>}
+            <Header onClick={() => { toggle() }}>
+                <span>INSTAGRAM COMMENTS</span>
+                <Minus className={display}>—</Minus>
+                <Plus className={display}>+</Plus>
+            </Header>
+            <Content className={display}>
+                <Instruction>Comments Stats</Instruction>
+                {loadingComments ? "Loading" : <BoxContent>
+                    <Box><Title><i>Unique users</i></Title><Count>{uniqueResults.length}</Count></Box>
+                    <Box><Title><i>Comments</i></Title><Count>{results.filter((rec: any) => rec.type === 'c').length}</Count></Box>
+                    <Box><Title><i>Replies</i></Title><Count>{results.filter((rec: any) => rec.type === 'r').length}</Count></Box>
+                    <Box><Title><i>Total Comments</i></Title><Count>{results.length}</Count></Box></BoxContent>}
 
-            <br />
-            <Instruction> Count of entries based on settings below</Instruction>
-            {
-                loadingComments ? "Loading" : <Content>
-                    <Box><Title><i>Unique entires</i></Title><Count>{uniqueQualifiedResults.length}</Count></Box>
-                    <Box><Title><i>Comments</i></Title><Count>{qualifiedResults.filter((rec: any) => rec.type === 'c').length}</Count></Box>
-                    <Box><Title><i>Replies</i></Title><Count>{qualifiedResults.filter((rec: any) => rec.type === 'r').length}</Count></Box>
-                    <Box><Title><i>Additional Entries</i></Title><Count>+{qualifiedResults.filter((rec: any) => rec.type === 'a').length}</Count></Box>
-                    <Box><Title><i>Total</i></Title><Count>{qualifiedResults.length}</Count></Box>
-                </Content>
-            }
-            <br />
-            {loadingComments ? 'Records retrieved: ' + comments.length : ''}
+                <br />
+                <Instruction> Count of entries based on settings below</Instruction>
+                {
+                    loadingComments ? "Loading" : <BoxContent>
+                        <Box><Title><i>Unique entires</i></Title><Count>{uniqueQualifiedResults.length}</Count></Box>
+                        <Box><Title><i>Comments</i></Title><Count>{qualifiedResults.filter((rec: any) => rec.type === 'c').length}</Count></Box>
+                        <Box><Title><i>Replies</i></Title><Count>{qualifiedResults.filter((rec: any) => rec.type === 'r').length}</Count></Box>
+                        <Box><Title><i>Additional Entries</i></Title><Count>+{qualifiedResults.filter((rec: any) => rec.type === 'a').length}</Count></Box>
+                        <Box><Title><i>Total</i></Title><Count>{qualifiedResults.length}</Count></Box>
+                    </BoxContent>
+                }
+                <br />
+                {loadingComments ? 'Records retrieved: ' + comments.length : ''}
+            </Content>
         </Wrapper >
     )
 }
@@ -93,6 +113,19 @@ const Wrapper = styled.div`
 const Content = styled.div`
             display: flex;
             justify-content: center;
+
+    &.show{
+        display: block;
+    }
+    &.hide{
+        display: none;
+    }
+            `
+
+const BoxContent = styled.div`
+            display: flex;
+            justify-content: center;
+
             `
 
 const Box = styled.div`
