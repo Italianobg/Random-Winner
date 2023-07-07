@@ -51,6 +51,10 @@ function Instagram({ }: Props) {
                         setLoadingUsers(false);
                     }
                 })
+        } else {
+            setSelectedInstagramID('');
+            setMedia([]);
+            setComments([]);
         }
     }, [user])
 
@@ -103,7 +107,7 @@ function Instagram({ }: Props) {
         <Wrapper>
             <Accounts loadingUsers={loadingUsers} instagramUsers={instagramUsers} selectedInstagramID={selectedInstagramID} setSelectedInstagramID={setSelectedInstagramID} />
             <Posts loadingMedia={loadingMedia} media={media} setSelectedMediaID={setSelectedMediaID} />
-            <Comments loadingComments={loadingComments} comments={comments} results={results} setResults={setResults} qualifiedResults={qualifiedResults} uniqueQualifiedResults={uniqueQualifiedResults} setSettings={setSettings} />
+            <Comments selectedMediaID={selectedMediaID} loadingComments={loadingComments} comments={comments} results={results} setResults={setResults} qualifiedResults={qualifiedResults} uniqueQualifiedResults={uniqueQualifiedResults} setSettings={setSettings} />
             <Settings results={results} settings={settings} setSettings={setSettings} setQualifiedResults={setQualifiedResults} setUniqueQualifiedResults={setUniqueQualifiedResults} />
             <Raffle qualifiedResults={qualifiedResults} setQualifiedResults={setQualifiedResults} ></Raffle>
         </Wrapper >

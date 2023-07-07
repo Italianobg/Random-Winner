@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { removeDuplicates } from '../utils'
 
 type Props = {
+    selectedMediaID: string,
     loadingComments: boolean,
     comments: Object[],
     results: Object[],
@@ -15,6 +16,7 @@ type Props = {
 
 
 function Comments({
+    selectedMediaID,
     loadingComments,
     comments,
     results,
@@ -35,10 +37,12 @@ function Comments({
     }
 
     useEffect(() => {
-        if (comments.length > 0) {
+        if (selectedMediaID.length > 0) {
             setDisplay('show');
+        } else {
+            setDisplay('hide');
         }
-    }, [comments])
+    }, [selectedMediaID])
 
 
     useEffect(() => {
@@ -67,7 +71,11 @@ function Comments({
             // uniqueResults = results unique usernames
             setUniqueResults(removeDuplicates(temp));
 
+        } else {
+            setResults([]);
+            setUniqueResults([]);
         }
+
     }, [comments, loadingComments])
 
     return (

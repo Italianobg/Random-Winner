@@ -23,7 +23,7 @@ function Body({ }: Props) {
 }
 
 const Wrapper = styled.div`
-    
+    flex-grow: 1;
 `
 
 export default Body

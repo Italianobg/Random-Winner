@@ -37,13 +37,11 @@ function UserContextProvider({ children }: { children: any }) {
 
     const [user, setUser] = useState({} as Profile);
 
-
     const setUserData = (user: Profile) => { setUser(user) };
 
     const contextValue = {
         user: user,
         setUserData: useCallback((user: Profile) => setUserData(user), [])
-
     };
 
     useEffect(() => {

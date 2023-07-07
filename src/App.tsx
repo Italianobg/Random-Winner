@@ -1,3 +1,4 @@
+import './utils/firebase';
 import UserContextProvider from "./provider/Profile";
 import Header from "./modules/Header";
 import Body from "./modules/Body";
@@ -26,11 +27,15 @@ const Background = styled.div`
   font-family: 'Lato', sans-serif;
   /* font-family: 'Forum', cursive; */
   font-size: 18px;
+  overflow: auto;
   `
 
 const Wrapper = styled.div`
     max-width: 1024px;
     margin: 0 auto;
+    min-height: 100vh;
+    display:flex;
+    flex-direction: column;
   `
 
 export default App;

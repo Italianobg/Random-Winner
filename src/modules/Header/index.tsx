@@ -1,10 +1,9 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { NavLink } from "react-router-dom";
-import { LoginSocialFacebook } from 'reactjs-social-login';
-import { FacebookLoginButton } from 'react-social-login-buttons';
 import { UserContext } from '../../provider/Profile';
-
+import FBLogin from './components/FBLogin';
+import Logout from './components/Logout';
 
 type Props = {}
 
@@ -22,17 +21,9 @@ function Header({ }: Props) {
                 <Link to="admin">ADMIN</Link>
             </Nav>
             <Profile>
-                {user.name ? <Nav>Hello, {user.name}!</Nav> :
-                    <LoginSocialFacebook
-                        appId='1355230801924985'
-                        scope='pages_show_list,instagram_basic,pages_read_engagement,pages_read_user_content,public_profile'
-                        onResolve={(res: any) => {
-                            setUserData(res.data);
-                        }}
-                        onReject={(err) => { console.log(err) }}
-                    >
-                        <FacebookLoginButton />
-                    </LoginSocialFacebook>
+                {user.name ? <Nav><Name>Hello, {user.name}!</Name>
+                    <Logout setUserData={setUserData} /></Nav> :
+                    <FBLogin user={user} setUserData={setUserData} />
                 }
             </Profile >
         </Wrapper >
@@ -59,6 +50,7 @@ const Nav = styled.div`
     background-color: rgb(189, 210, 255);
     padding: 0px 10px;
     border-radius:4px;
+    justify-content: space-between;
 `
 
 const Link = styled(NavLink)`
@@ -70,9 +62,12 @@ const Link = styled(NavLink)`
     border-radius: 4px;
   }
 `
-
 const Profile = styled.div`
-    
+    width: 30%;
+`
+
+const Name = styled.div`
+    font-size: 19px;
 `
 
 export default Header
