@@ -27,6 +27,7 @@ const DonateButton = () => {
 const Wrapper = styled.span`
     height: 50px;
     padding-left: 5px;
+    vertical-align: middle;
 
     img{
         height: 40px;

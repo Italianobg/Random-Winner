@@ -5,6 +5,7 @@ import Home from './moules/Home'
 import Facebook from './moules/Facebook'
 import Instagram from './moules/Instagram'
 import Admin from './moules/Admin'
+import Privacy from './moules/Privacy'
 
 
 type Props = {}
@@ -14,9 +15,10 @@ function Body({ }: Props) {
         <Wrapper>
             <Routes>
                 <Route path="" element={<Home />} ></Route>
-                <Route path="facebook" element={<Facebook />} ></Route>
+                {/* <Route path="facebook" element={<Facebook />} ></Route> */}
                 <Route path="instagram" element={<Instagram />} ></Route>
-                <Route path="admin" element={<Admin />} ></Route>
+                <Route path="privacy" element={<Privacy />} ></Route>
+                {/* <Route path="admin" element={<Admin />} ></Route> */}
             </Routes>
         </Wrapper>
     )

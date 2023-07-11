@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { UserContext } from '../../provider/Profile';
 import FBLogin from './components/FBLogin';
 import Logout from './components/Logout';
+import logo from '../../images/RandomeR Logo.png';
 
 type Props = {}
 
@@ -13,12 +14,12 @@ function Header({ }: Props) {
 
     return (
         <Wrapper>
-            <Logo></Logo>
+            <Logo><img src={logo} alt="Logo" /></Logo>
             <Nav>
                 <Link to="">HOME</Link>
-                <Link to="facebook">FACEBOOK</Link>
+                {/* <Link to="facebook">FACEBOOK</Link> */}
                 <Link to="instagram">INSTAGRAM</Link>
-                <Link to="admin">ADMIN</Link>
+                {/* <Link to="admin">ADMIN</Link> */}
             </Nav>
             <Profile>
                 {user.name ? <Nav><Name>Hello, {user.name}!</Name>
@@ -37,7 +38,11 @@ const Wrapper = styled.div`
 `
 
 const Logo = styled.div`
-    background-image: url();
+    width: 18%;
+
+    img{
+        width: 100%;
+    }
 `
 
 const Nav = styled.div`
