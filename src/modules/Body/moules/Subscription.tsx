@@ -1,11 +1,17 @@
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
+import titles from '../../../titles'
 
 type Props = {}
 
 function Subscription({ }: Props) {
     return (
-        <Wrapper>Payment Plans:
+        <Wrapper>
+            <Helmet>
+                <title>{titles.subscription}</title>
+            </Helmet>
+            Payment Plans:
             <Plans>
                 <Box>
                     <Header>Daily</Header>

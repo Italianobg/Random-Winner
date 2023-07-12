@@ -15,25 +15,24 @@ function Logout({ setUserData }: Props) {
     )
 }
 
-const Button = styled.button`
-    display: block; 
+const Button = styled.button` 
+    display: flex; 
     border: 0px; 
     border-radius: 3px; 
     box-shadow: rgba(0, 0, 0, 0.5) 0px 1px 2px; 
     color: rgb(255, 255, 255); 
     cursor: pointer; 
     font-size: 17px; 
-    margin: 5px; 
-    width: calc(33% - 10px); 
+    margin: 5px 0px 5px 15px; 
     height: calc(70% - 0px);
     overflow: hidden; 
-    padding: 0px 10px; 
+    padding: 0px 10px 0px 10px; 
     user-select: none; 
     background: rgb(59, 89, 152);
+    align-items: center;
 
     div{
         text-align: center; 
-        width: 100%;
     }
 `
 

@@ -7,6 +7,8 @@ import Posts from './components/Posts';
 import Settings from './components/Settings';
 import Comments from './components/Comments';
 import Raffle from './components/Raffle';
+import { Helmet } from 'react-helmet';
+import titles from '../../../../titles';
 
 type Props = {}
 
@@ -105,6 +107,9 @@ function Instagram({ }: Props) {
 
     return (
         <Wrapper>
+            <Helmet>
+                <title>{titles.instagram}</title>
+            </Helmet>
             <Accounts loadingUsers={loadingUsers} instagramUsers={instagramUsers} selectedInstagramID={selectedInstagramID} setSelectedInstagramID={setSelectedInstagramID} />
             <Posts loadingMedia={loadingMedia} media={media} setSelectedMediaID={setSelectedMediaID} />
             <Comments selectedMediaID={selectedMediaID} loadingComments={loadingComments} comments={comments} results={results} setResults={setResults} qualifiedResults={qualifiedResults} uniqueQualifiedResults={uniqueQualifiedResults} setSettings={setSettings} />

@@ -30,7 +30,7 @@ const Wrapper = styled.span`
     vertical-align: middle;
 
     img{
-        height: 40px;
+        height: 35px;
         cursor: pointer;
         
         }

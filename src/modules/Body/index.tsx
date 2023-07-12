@@ -6,6 +6,7 @@ import Facebook from './moules/Facebook'
 import Instagram from './moules/Instagram'
 import Admin from './moules/Admin'
 import Privacy from './moules/Privacy'
+import NotFound from './moules/NotFound'
 
 
 type Props = {}
@@ -14,6 +15,7 @@ function Body({ }: Props) {
     return (
         <Wrapper>
             <Routes>
+                <Route path="*" element={<NotFound />} ></Route>
                 <Route path="" element={<Home />} ></Route>
                 {/* <Route path="facebook" element={<Facebook />} ></Route> */}
                 <Route path="instagram" element={<Instagram />} ></Route>

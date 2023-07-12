@@ -32,13 +32,15 @@ function Header({ }: Props) {
 }
 
 const Wrapper = styled.div`
-    height: 150px;
+    height: 70px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 `
 
 const Logo = styled.div`
-    width: 18%;
+    width: 22%;
 
     img{
         width: 100%;
@@ -68,7 +70,6 @@ const Link = styled(NavLink)`
   }
 `
 const Profile = styled.div`
-    width: 30%;
 `
 
 const Name = styled.div`

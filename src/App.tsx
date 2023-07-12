@@ -32,6 +32,7 @@ const Background = styled.div`
 
 const Wrapper = styled.div`
     max-width: 1024px;
+    width: 80%;
     margin: 0 auto;
     min-height: 100vh;
     display:flex;

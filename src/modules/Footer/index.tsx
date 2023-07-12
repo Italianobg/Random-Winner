@@ -13,6 +13,7 @@ function Footer({ }: Props) {
 }
 
 const Wrapper = styled.div`
+    font-size: 15px;
     height: 50px;
     display: flex;
     justify-content: Center;
