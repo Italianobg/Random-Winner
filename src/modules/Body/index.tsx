@@ -1,12 +1,12 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
-import Home from './moules/Home'
-import Facebook from './moules/Facebook'
-import Instagram from './moules/Instagram'
-import Admin from './moules/Admin'
-import Privacy from './moules/Privacy'
-import NotFound from './moules/NotFound'
+import Home from './modules/Home'
+import Facebook from './modules/Facebook'
+import Instagram from './modules/Instagram'
+import Admin from './modules/Admin'
+import Privacy from './modules/Privacy'
+import NotFound from './modules/NotFound'
 
 
 type Props = {}

@@ -11,7 +11,7 @@ function NotFound({ }: Props) {
             <Helmet>
                 <title>{titles.notfound}</title>
             </Helmet>
-            Ooops... Randomer, we are sorry that you requested random page!
+            Ooops... Randomer, we are sorry that you requested a random page!
         </Wrapper>
     )
 }

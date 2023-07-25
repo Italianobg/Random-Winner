@@ -8,9 +8,10 @@ type Props = {
     instagramUsers: Object[],
     selectedInstagramID: string,
     setSelectedInstagramID: Function,
+    setSelectedInstagramAccount: Function,
 }
 
-function Accounts({ loadingUsers, instagramUsers, selectedInstagramID, setSelectedInstagramID }: Props) {
+function Accounts({ loadingUsers, instagramUsers, selectedInstagramID, setSelectedInstagramID, setSelectedInstagramAccount }: Props) {
     const { user, setUserData } = useContext(UserContext);
     const [display, setDisplay] = useState('show');
 
@@ -41,7 +42,8 @@ function Accounts({ loadingUsers, instagramUsers, selectedInstagramID, setSelect
                         {
                             instagramUsers.length > 0 ? <Pages className={display}>{instagramUsers.map((instagramUser: any) => {
                                 return <UserBox key={instagramUser.instagram_business_account.id} className={instagramUser.instagram_business_account.id === selectedInstagramID ? 'selected' : ''} onClick={() => {
-                                    setSelectedInstagramID(instagramUser.instagram_business_account.id)
+                                    setSelectedInstagramID(instagramUser.instagram_business_account.id);
+                                    setSelectedInstagramAccount(instagramUser.instagram_business_account)
                                 }}><Name>{instagramUser.instagram_business_account.name}</Name>
                                     <Image><img src={instagramUser.instagram_business_account.profile_picture_url} alt="Page Image" /></Image>
                                     <Followers>Followers: {instagramUser.instagram_business_account.followers_count}</Followers>

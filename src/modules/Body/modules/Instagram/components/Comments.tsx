@@ -11,7 +11,8 @@ type Props = {
     setResults: Function,
     qualifiedResults: Object[],
     uniqueQualifiedResults: Object[],
-    setSettings: Function
+    setSettings: Function,
+    selectedInstagramAccount: any,
 }
 
 
@@ -23,7 +24,8 @@ function Comments({
     setResults,
     qualifiedResults,
     uniqueQualifiedResults,
-    setSettings
+    setSettings,
+    selectedInstagramAccount
 }: Props) {
 
     const [uniqueResults, setUniqueResults] = useState<Object[]>([]);
@@ -95,6 +97,7 @@ function Comments({
 
                 <br />
                 <Instruction> Count of entries based on settings below</Instruction>
+                {loadingComments ? 'Records retrieved: ' + comments.length : ''}
                 {
                     loadingComments ? "Loading" : <BoxContent>
                         <Box><Title><i>Unique entires</i></Title><Count>{uniqueQualifiedResults.length}</Count></Box>
@@ -105,7 +108,8 @@ function Comments({
                     </BoxContent>
                 }
                 <br />
-                {loadingComments ? 'Records retrieved: ' + comments.length : ''}
+                <Instruction>Engagement</Instruction>
+                <Box><Title><i>Engagement</i></Title><Count>{((results.length / selectedInstagramAccount.followers_count) * 100).toFixed(1)} %</Count></Box>
             </Content>
         </Wrapper >
     )

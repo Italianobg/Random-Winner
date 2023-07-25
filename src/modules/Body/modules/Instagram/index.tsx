@@ -9,6 +9,8 @@ import Comments from './components/Comments';
 import Raffle from './components/Raffle';
 import { Helmet } from 'react-helmet';
 import titles from '../../../../titles';
+import PDFReport from './components/PDFReport';
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 
 type Props = {}
 
@@ -20,6 +22,7 @@ function Instagram({ }: Props) {
     const [instagramUsers, setInstagramUsers] = useState<Object[]>([]);
     const [loadingUsers, setLoadingUsers] = useState(false);
     const [selectedInstagramID, setSelectedInstagramID] = useState('');
+    const [selectedInstagramAccount, setSelectedInstagramAccount] = useState<any>({});
     const [media, setMedia] = useState<[]>([]);
     const [loadingMedia, setLoadingMedia] = useState(false);
     const [selectedMediaID, setSelectedMediaID] = useState('');
@@ -110,11 +113,19 @@ function Instagram({ }: Props) {
             <Helmet>
                 <title>{titles.instagram}</title>
             </Helmet>
-            <Accounts loadingUsers={loadingUsers} instagramUsers={instagramUsers} selectedInstagramID={selectedInstagramID} setSelectedInstagramID={setSelectedInstagramID} />
+            <Accounts loadingUsers={loadingUsers} instagramUsers={instagramUsers} selectedInstagramID={selectedInstagramID} setSelectedInstagramID={setSelectedInstagramID} setSelectedInstagramAccount={setSelectedInstagramAccount} />
             <Posts loadingMedia={loadingMedia} media={media} setSelectedMediaID={setSelectedMediaID} />
-            <Comments selectedMediaID={selectedMediaID} loadingComments={loadingComments} comments={comments} results={results} setResults={setResults} qualifiedResults={qualifiedResults} uniqueQualifiedResults={uniqueQualifiedResults} setSettings={setSettings} />
+            <Comments selectedMediaID={selectedMediaID} loadingComments={loadingComments} comments={comments} results={results} setResults={setResults} qualifiedResults={qualifiedResults} uniqueQualifiedResults={uniqueQualifiedResults} setSettings={setSettings} selectedInstagramAccount={selectedInstagramAccount} />
             <Settings results={results} settings={settings} setSettings={setSettings} setQualifiedResults={setQualifiedResults} setUniqueQualifiedResults={setUniqueQualifiedResults} />
             <Raffle qualifiedResults={qualifiedResults} setQualifiedResults={setQualifiedResults} ></Raffle>
+            {/* <PDFDownloadLink document={<PDFReport />} fileName="somename.pdf">
+                {({ blob, url, loading, error }) =>
+                    loading ? 'Loading document...' : 'Download now!'
+                }
+            </PDFDownloadLink> */}
+            <PDFViewer width="1024" height="800">
+                <PDFReport selectedInstagramAccount={selectedInstagramAccount} />
+            </PDFViewer>
         </Wrapper >
     )
 }
@@ -122,5 +133,7 @@ function Instagram({ }: Props) {
 const Wrapper = styled.div`
 
     `
+
+
 
 export default Instagram

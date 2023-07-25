@@ -9,7 +9,7 @@ function FBLogin({ user, setUserData }: Props) {
     return (
         <LoginSocialFacebook
             appId='1355230801924985'
-            scope='pages_show_list,instagram_basic,pages_read_engagement,pages_read_user_content,public_profile'
+            scope='pages_show_list,instagram_basic,pages_read_engagement,public_profile'
             onResolve={(res: any) => {
                 let { userID } = res.data;
                 const fetchUserData = async () => {
