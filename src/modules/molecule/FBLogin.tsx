@@ -1,7 +1,9 @@
 import React from 'react'
 import { LoginSocialFacebook } from 'reactjs-social-login';
 import { FacebookLoginButton } from 'react-social-login-buttons';
-import { addUser, getUserByID } from '../../../api/firestore';
+import { addUser, getUserByID } from '../../api/firestore';
+import styled from 'styled-components';
+import Button from '../atoms/Button';
 
 type Props = { user: any, setUserData: Function }
 
@@ -23,15 +25,15 @@ function FBLogin({ user, setUserData }: Props) {
                         setUserData(res.data);
                     }
                 }
-
                 fetchUserData().catch((err) => console.log(err));
-
             }}
             onReject={(err) => console.log(err)}
         >
-            <FacebookLoginButton />
+            <Button text='fb login' />
         </LoginSocialFacebook>
     )
 }
+
+
 
 export default FBLogin
