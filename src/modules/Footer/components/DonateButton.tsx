@@ -1,4 +1,4 @@
-import donate from '../../../images/PayPal Long.png'
+import donate from '../../../assets/images/PayPal Long.png'
 import styled from 'styled-components';
 
 

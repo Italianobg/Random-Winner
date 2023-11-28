@@ -13,12 +13,16 @@ function Footer({ }: Props) {
 }
 
 const Wrapper = styled.div`
+    z-index: 2;
+    color: #191919;
+    font-family: "Work Sans";
     font-size: 15px;
     height: 50px;
     display: flex;
     justify-content: Center;
     align-items: center;
-    margin-top: 25px;
+    margin-top: 45px;
+    margin-bottom: 10px;
 `
 
 const Content = styled.div`
