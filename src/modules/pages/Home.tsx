@@ -1,9 +1,9 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import titles from '../../titles';
 import Button from '../atoms/Button';
+import Option from '../atoms/Option';
 
 type Props = {}
 
@@ -21,13 +21,7 @@ function Home({ }: Props) {
                 </HomeContent>
             </HomeInfo>
             <Latest>
-                <Info>
-                    <InfoHeader to="/instagram">
-                        <InfoNumber>01.</InfoNumber>
-                        <InfoTitle>instagram</InfoTitle>
-                    </InfoHeader>
-                    <InfoText>You can select a winner for your Instagram giveaway in the following steps</InfoText>
-                </Info>
+                <Option number='1' title='instagram' text='You can select a winner for your Instagram giveaway in the following steps' link="/instagram" />
                 <Quote>
                     Any one who considers arithmetical methods of producing random winners is, of course, in a state of sin.
                 </Quote>
@@ -79,42 +73,6 @@ const Latest = styled.div`
     display: flex;
     justify-content: space - around;
     z-index: 2;
-`
-
-const Info = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 50%;
-`
-
-const InfoNumber = styled.div`
-    font-size: 35px;
-    color: #191919;
-    font-weight: 900;
-    font-family: "Work Sans";
-`
-
-const InfoHeader = styled(Link)`
-    color: #191919;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-`
-
-const InfoTitle = styled.div`
-    font-size: 25px;
-    font-weight: 600;
-    font-family: "Work Sans";
-    margin-left: 16px;
-`
-
-const InfoText = styled.div`
-    margin-top: 16px;
-    font-size: 18px;
-    color: #7a7a7a;
-    font-weight: 400;
-    font-family: "Work Sans";
-    text-align: left;
 `
 
 const Quote = styled.div`
