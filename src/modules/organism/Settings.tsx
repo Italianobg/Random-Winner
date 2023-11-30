@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { removeDuplicates } from '../utils'
+import { removeDuplicates } from '../pages/Instagram/utils'
 import styled from 'styled-components'
-import { Header, Instruction, Minus, Plus } from '../../../Body/modules/common.styled'
+import { Instruction } from '../Body/modules/common.styled'
+import Option from '../atoms/Option'
 
 type Props = {
+    selectedMediaID: string,
     results: Object[],
     settings: { mentions: number, replies: boolean, duplicate: boolean, exclude: string, add: string },
     setSettings: Function,
@@ -11,25 +13,9 @@ type Props = {
     setUniqueQualifiedResults: Function,
 }
 
-function Settings({ results, settings, setSettings, setQualifiedResults, setUniqueQualifiedResults }: Props) {
+function Settings({ selectedMediaID, results, settings, setSettings, setQualifiedResults, setUniqueQualifiedResults }: Props) {
 
     const mentions = [0, 1, 2, 3, 4, 5];
-    const [display, setDisplay] = useState('hide');
-
-    function toggle() {
-        if (display === 'hide')
-            setDisplay('show');
-        else
-            setDisplay('hide')
-    }
-
-    useEffect(() => {
-        if (results.length > 0) {
-            setDisplay('show');
-        }
-    }, [results])
-
-
 
     useEffect(() => {
         let temp: Object[] = [];
@@ -120,75 +106,69 @@ function Settings({ results, settings, setSettings, setQualifiedResults, setUniq
 
     return (
         <Wrapper>
-            <Header onClick={() => { toggle() }}>
-                <span>INSTAGRAM GIVEAWAY SETTINGS & FILTERS</span>
-                <Minus className={display}>—</Minus>
-                <Plus className={display}>+</Plus>
-            </Header>
-            <Content className={display}>
-                <Instruction >Minimum amount of @mentions in 1 comment:&nbsp;
-                    <select name="mentions" id="mentions" onChange={(e) => {
-                        changeMentions(e)
-                    }}> {mentions.map((number: any) => {
-                        return <option key={number} value={number} >{number}</option >
-                    })}</select>
-                </Instruction>
+            <Option number='5' title='settings and filters' text='Specify and adjust entries ' />
+            {selectedMediaID.length > 0 ?
+                <Content>
+                    <Instruction >Minimum amount of @mentions in 1 comment:&nbsp;
+                        <select name="mentions" id="mentions" onChange={(e) => {
+                            changeMentions(e)
+                        }}> {mentions.map((number: any) => {
+                            return <option key={number} value={number} >{number}</option >
+                        })}</select>
+                    </Instruction>
 
-                <Instruction>Exclude comment replies
-                    <input id="replies" type="checkbox" onChange={(e) => { toggleReplies(e) }} />
-
-                </Instruction>
-                <Instruction >Filter duplicate users
-                    <input id="duplicates" type="checkbox" onChange={(e) => { toggleDuplicates(e) }} />
-
-                </Instruction>
-                <Instruction >Exclude users<br />
-                    <textarea id="exclude" name="exclude" value={settings.exclude} rows={5} cols={50} onChange={(e) => { exclude(e) }} />
-
-                </Instruction>
-                <Instruction >Add extra entries<br />
-                    <textarea id="add" name="add" rows={5} cols={50} value={settings.add} onChange={(e) => { add(e) }} />
-                </Instruction>
-            </Content>
+                    <Instruction>Exclude comment replies
+                        <input id="replies" type="checkbox" onChange={(e) => { toggleReplies(e) }} />
+                    </Instruction>
+                    <Instruction >Filter duplicate users
+                        <input id="duplicates" type="checkbox" onChange={(e) => { toggleDuplicates(e) }} />
+                    </Instruction>
+                    <Instruction >Exclude users<br />
+                        <textarea id="exclude" name="exclude" value={settings.exclude} rows={5} cols={50} onChange={(e) => { exclude(e) }} />
+                    </Instruction>
+                    <Instruction >Add extra entries<br />
+                        <textarea id="add" name="add" rows={5} cols={50} value={settings.add} onChange={(e) => { add(e) }} />
+                    </Instruction>
+                </Content> :
+                ''}
         </Wrapper>
     )
 }
 
 const Wrapper = styled.div`
-    border: 1px solid #fad5dbcf;
-    border-radius: 10px;
-    padding: 2% 3%;
-    margin-top: 1%;
+    display: flex;
+    align-items: top;
+    margin-bottom: 40px;
+    align-items: top;
+    font-family: "Work Sans";
+    color: black;
+    font-size: 16px;
 
     select{
         width: 20%;
         font-size: 18px;
         padding: 0.7%;
-        border: 1px solid #fab1becf;
-        border-radius: 4px;
+        border-radius: 2px;
+        box-sizing: border-box;
+        position: relative;
+        z-index: 2;
     }
+
     textarea{
         width: 60%;
         font-size: 18px;
-        padding: 0.7%;
-        border: 1px solid #fab1becf;
-        border-radius: 4px;
+        padding: 4px;
+        border-radius: 1px;
+        position: relative;
+        z-index: 2;
     }
-    input{
-        font-size: 18px;
-        padding: 0.7%;
-        border: 1px solid #fab1becf;
-        border-radius: 4px;
-    }
+
 `
 
 const Content = styled.div`
-    &.show{
-        display: block;
-    }
-    &.hide{
-        display: none;
-    }
+    flex-grow: 1;
 `
+
+
 
 export default Settings
