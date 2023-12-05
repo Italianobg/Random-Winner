@@ -6,7 +6,6 @@ import Footer from "./modules/Footer";
 import styled from "styled-components";
 import grunge1 from "./assets/images/grunge1.svg"
 import grunge2 from "./assets/images/grunge2.svg"
-import rectangle from "./assets/images/rectangle.png"
 import line1 from "./assets/images/line1.png"
 import line2 from "./assets/images/line2.png"
 import line3 from "./assets/images/line3.png"
@@ -22,7 +21,6 @@ function App() {
           <img className='line2' src={line2} alt="line" />
           <img className='line3' src={line3} alt="line" />
           <UserContextProvider>
-            <img className='rectangle' src={rectangle} alt="rectangle" />
             <Header />
             <Body />
             <Footer />
