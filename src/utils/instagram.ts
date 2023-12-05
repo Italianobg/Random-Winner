@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { getMediaComments } from "../api/lib/instagram";
 import { removeDuplicates } from "../modules/pages/Instagram/utils";
 import { Comment, Data } from "../provider/Data";
@@ -97,14 +98,16 @@ function getUniqueUserCount(comments: Comment[]): number {
 function applySettings(data: Data, setDataData: Function) {
   const { comments, settings } = data;
   let qualifiedComments: Comment[] = [];
-
   qualifiedComments = comments;
+
+  // Remove replies if selected
   if (settings.replies) {
     qualifiedComments = qualifiedComments.filter(
       (res: any) => res.type !== "r"
     );
   }
 
+  // Filter by number of mentions
   if (settings.mentions > 0) {
     qualifiedComments = qualifiedComments.filter((res: any) => {
       let textArr = res.text.split(" ");
@@ -120,12 +123,13 @@ function applySettings(data: Data, setDataData: Function) {
     });
   }
 
+  // Remove duplicates if selected
   if (settings.duplicate) {
     qualifiedComments = removeDuplicates(qualifiedComments);
   }
 
+  // Add records
   let addArray: string[] = [];
-
   qualifiedComments = qualifiedComments.filter((resulta: any) => {
     return resulta.type !== "a";
   });
@@ -149,7 +153,7 @@ function applySettings(data: Data, setDataData: Function) {
   if (addArray.length > 0) {
     addArray.forEach((participant) => {
       qualifiedComments.push({
-        id: participant,
+        id: v4(),
         username: participant,
         type: "a",
         text: "",
@@ -157,6 +161,7 @@ function applySettings(data: Data, setDataData: Function) {
     });
   }
 
+  // Remove records
   let excludeArray: string[] = [];
   excludeArray = settings.exclude.split("\n");
   excludeArray = excludeArray
@@ -177,11 +182,14 @@ function applySettings(data: Data, setDataData: Function) {
       } else return true;
     });
   }
+
+  // Creating additional variables
   let commentsCounter = getCommentsCount(qualifiedComments);
   let repliesCounter = getRepliesCount(qualifiedComments);
   let additionalEntriesCounter = getAdditionalRecordsCount(qualifiedComments);
   let uniqueUserCounter = getUniqueUserCount(qualifiedComments);
 
+  // Save Data Context based on applied settings
   setDataData({
     ...data,
     qualifiedComments,
@@ -194,6 +202,7 @@ function applySettings(data: Data, setDataData: Function) {
   });
 }
 
+// Reset Data Context variables
 function clearData(setData: Function): void {
   setData({
     loadingInstagramAccounts: false,
