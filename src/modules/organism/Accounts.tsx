@@ -41,7 +41,7 @@ function Accounts({ }: Props) {
         <Wrapper>
             <Option number='2' title='instagram accounts' text='select your instagram account' />
             {user.accessToken === undefined ?
-                "" : <Content>
+                '' : <Content>
                     {
                         loadingInstagramAccounts ? 'Loading' : <List>
                             {
@@ -68,14 +68,19 @@ const Wrapper = styled.div`
     display: flex;
     align-items: top;
     margin-bottom: 40px;
+    position: relative;
 `
 
 const Content = styled.div`
-    flex-grow:1; 
+    flex-grow:1;
     font-size: 16px;
     color: rgb(122, 122, 122);
     font-weight: 400;
     font-family: "Work Sans";
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
 `
 
 const List = styled.div`
