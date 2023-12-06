@@ -1,113 +1,51 @@
-import React, { useEffect, useState } from 'react'
-import { removeDuplicates } from '../pages/Instagram/utils'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Instruction } from '../Body/modules/common.styled'
 import Option from '../atoms/Option'
+import { DataContext } from '../../provider/Data'
 
 type Props = {
-    selectedMediaID: string,
-    results: Object[],
-    settings: { mentions: number, replies: boolean, duplicate: boolean, exclude: string, add: string },
-    setSettings: Function,
-    setQualifiedResults: Function,
-    setUniqueQualifiedResults: Function,
 }
 
-function Settings({ selectedMediaID, results, settings, setSettings, setQualifiedResults, setUniqueQualifiedResults }: Props) {
+function Settings({ }: Props) {
+    const { data, setDataData } = useContext(DataContext);
+
+    const { selectedMediaId, settings } = data;
 
     const mentions = [0, 1, 2, 3, 4, 5];
 
-    useEffect(() => {
-        let temp: Object[] = [];
-
-        temp = results;
-        if (settings.replies) {
-            temp = temp.filter((res: any) => res.type !== 'r');
-        }
-
-        if (settings.mentions > 0) {
-            temp = temp.filter((res: any) => {
-                let textArr = res.text.split(' ');
-                let counter = 0;
-                textArr.forEach((word: string) => {
-                    if (word.startsWith('@') && word.length > 1) {
-                        counter++;
-                    }
-                });
-                if (counter >= settings.mentions) {
-                    return true;
-                }
-                else return false;
-            });
-        }
-
-        if (settings.duplicate) {
-            temp = removeDuplicates(temp);
-        }
-
-        let addArray: string[] = []
-
-        temp = temp.filter((resulta: any) => { return resulta.type !== 'a' })
-        addArray = settings.add.split('\n');
-        addArray = addArray.filter((participant) => { if (participant.length === 0 || participant === '@' || participant.trim().length === 0) return false; else return true; }).map((participant) => { if (participant.startsWith('@')) { return participant.slice(1) } else return participant })
-
-        if (addArray.length > 0) {
-            addArray.forEach(participant => {
-                temp.push({ username: participant, type: 'a', text: '' });
-            })
-        }
-
-        let excludeArray: string[] = []
-        excludeArray = settings.exclude.split('\n');
-        excludeArray = excludeArray.filter((participant) => { if (participant.length === 0 || participant === '@') return false; else return true; }).map((participant) => { if (participant.startsWith('@')) { return participant.slice(1) } else return participant })
-
-        if (excludeArray.length > 0) {
-            temp = temp.filter((participant: any) => { if (excludeArray.includes(participant.username)) { return false } else return true; })
-        }
-
-
-        setQualifiedResults(temp)
-        setUniqueQualifiedResults(removeDuplicates(temp));
-
-    }, [results, settings])
-
-
-
     function changeMentions(e: any) {
-        setSettings({ ...settings, mentions: +e.target.value });
+        setDataData({ ...data, settings: { ...settings, mentions: +e.target.value } });
     }
 
     function toggleReplies(e: any) {
-        if (e.target.checked) {
-            setSettings({ ...settings, replies: true });
-        }
-        else {
-            setSettings({ ...settings, replies: false });
-        }
+        setDataData({ ...data, settings: { ...settings, replies: e.target.checked } });
     }
 
     function toggleDuplicates(e: any) {
-        if (e.target.checked) {
-            setSettings({ ...settings, duplicate: true });
-        }
-        else {
-            setSettings({ ...settings, duplicate: false });
-        }
+        setDataData({ ...data, settings: { ...settings, duplicate: e.target.checked } });
     }
 
     function exclude(e: any) {
-        setSettings({ ...settings, exclude: e.target.value })
+        setDataData({ ...data, settings: { ...settings, exclude: e.target.value } });
     }
 
     function add(e: any) {
-        setSettings({ ...settings, add: e.target.value });
+        setDataData({ ...data, settings: { ...settings, add: e.target.value } });
     }
 
+    function toggleHide(e: any) {
+        setDataData({ ...data, settings: { ...settings, hide: e.target.checked } });
+    }
+
+    function toggleRemove(e: any) {
+        setDataData({ ...data, settings: { ...settings, remove: e.target.checked } });
+    }
 
     return (
         <Wrapper>
-            <Option number='5' title='settings and filters' text='Specify and adjust entries ' />
-            {selectedMediaID.length > 0 ?
+            <Option number='5' title='settings and filters' text='specify and adjust entries ' />
+            {selectedMediaId.length > 0 ?
                 <Content>
                     <Instruction >Minimum amount of @mentions in 1 comment:&nbsp;
                         <select name="mentions" id="mentions" onChange={(e) => {
@@ -116,18 +54,24 @@ function Settings({ selectedMediaID, results, settings, setSettings, setQualifie
                             return <option key={number} value={number} >{number}</option >
                         })}</select>
                     </Instruction>
-
                     <Instruction>Exclude comment replies
                         <input id="replies" type="checkbox" onChange={(e) => { toggleReplies(e) }} />
                     </Instruction>
                     <Instruction >Filter duplicate users
                         <input id="duplicates" type="checkbox" onChange={(e) => { toggleDuplicates(e) }} />
                     </Instruction>
-                    <Instruction >Exclude users<br />
-                        <textarea id="exclude" name="exclude" value={settings.exclude} rows={5} cols={50} onChange={(e) => { exclude(e) }} />
+                    <br />
+                    <Instruction >Exclude users</Instruction>
+                    <textarea id="exclude" name="exclude" value={settings.exclude} rows={5} cols={50} onChange={(e) => { exclude(e) }} />
+
+                    <Instruction >Add extra entries</Instruction>
+                    <textarea id="add" name="add" rows={5} cols={50} value={settings.add} onChange={(e) => { add(e) }} />
+
+                    <Instruction>Hide comment from results
+                        <input id="hide" type="checkbox" onChange={(e) => { toggleHide(e) }} />
                     </Instruction>
-                    <Instruction >Add extra entries<br />
-                        <textarea id="add" name="add" rows={5} cols={50} value={settings.add} onChange={(e) => { add(e) }} />
+                    <Instruction >Remove winner after it is chosen
+                        <input id="remove" type="checkbox" onChange={(e) => { toggleRemove(e) }} />
                     </Instruction>
                 </Content> :
                 ''}
@@ -161,6 +105,7 @@ const Wrapper = styled.div`
         border-radius: 1px;
         position: relative;
         z-index: 2;
+        margin-left: 10px;
     }
 
 `
