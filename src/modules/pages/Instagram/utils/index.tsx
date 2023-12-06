@@ -1,6 +1,8 @@
-export function removeDuplicates(arr: Object[]): Object[] {
+import { Comment } from "../../../../provider/Data";
+
+export function removeDuplicates(arr: Comment[]): Comment[] {
     let unique: string[] = [];
-    let uniqueArr: Object[] = [];
+    let uniqueArr: Comment[] = [];
     uniqueArr = arr.filter((element: any) => {
         const isDuplicate = unique.includes(element.username);
 
