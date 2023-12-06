@@ -1,33 +1,48 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import Option from '../atoms/Option'
+import { DataContext } from '../../provider/Data'
+import { UserContext } from '../../provider/Profile'
+import { getInstagramMedia } from '../../api/lib/instagram'
 
 type Props = {
-    selectedInstagramID: string,
-    loadingMedia: boolean,
-    media: [],
-    setSelectedMediaID: Function
 }
 
-function Posts({ selectedInstagramID, loadingMedia, media, setSelectedMediaID }: Props) {
+function Posts({ }: Props) {
+    const { user } = useContext(UserContext);
+    const { data, setDataData } = useContext(DataContext);
+    const accountId = data.selectedInstagramAccount.id;
+    const loading = data.loadingMedia;
+    const media = data.media;
+
+    useEffect(() => {
+        if (accountId.length > 0) {
+            setDataData({ ...data, loadingMedia: true })
+            getInstagramMedia(accountId, user.accessToken).then((res) => {
+                setDataData({ ...data, loadingMedia: false, media: res.data.data, winners: [] });
+            })
+        }
+    }, [data.selectedInstagramAccount])
 
     return (
         <Wrapper>
-            <Option number='3' title='posts' text='Your posts' />
-            {selectedInstagramID.length > 0 ? <Content>
-                {
-                    loadingMedia ? 'Loading'
-                        : <div>
-                            {media.length > 0 ?
-                                <ConcentSelect name="posts" id="posts" onChange={(e) => {
-                                    setSelectedMediaID(e.target.value)
-                                }}><option key='select' value='none' >Select Post</option>
-                                    {media.map((post: any) => {
-                                        return <option key={post.id} value={post.id} >{post.caption.slice(0, 70) + '...'}</option >
-                                    })}</ConcentSelect>
-                                : 'No Posts'}
-                        </div>
-                } </Content> :
+            <Option number='3' title='posts' text='your posts' />
+            {accountId.length > 0 ?
+                <Content>
+                    {
+                        loading ? 'Loading'
+                            : <div>
+                                {media.length > 0 ?
+                                    <ConcentSelect name="posts" id="posts" onChange={(e) => {
+                                        setDataData({ ...data, selectedMediaId: e.target.value })
+                                    }}><option key='select' value='none' >Select Post</option>
+                                        {media.map((post: any) => {
+                                            return <option key={post.id} value={post.id} >{post.caption.slice(0, 70) + '...'}</option >
+                                        })}</ConcentSelect>
+                                    : 'No Posts'}
+                            </div>
+                    }
+                </Content> :
                 ""}
         </Wrapper>
     )
@@ -61,8 +76,5 @@ const ConcentSelect = styled.select`
         box-sizing: border-box;
     }
 `
-
-
-
 
 export default Posts
