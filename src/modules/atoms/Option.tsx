@@ -1,26 +1,19 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components'
 
 type Props = {
     number: string,
     title: string,
     text: string,
+    link?: string
 }
 
-function Option({ number, title, text }: Props) {
-
-    const [display, setDisplay] = useState('show');
-
-    function toggle() {
-        if (display === 'hide')
-            setDisplay('show');
-        else
-            setDisplay('hide')
-    }
+function Option({ number, title, text, link }: Props) {
 
     return (
-        <Info onClick={() => { toggle() }}>
-            <InfoHeader>
+        <Info>
+            <InfoHeader to={link ? link : "#"}>
                 <InfoNumber>{number.padStart(2, '0')}.</InfoNumber>
                 <InfoTitle>{title}</InfoTitle>
             </InfoHeader>
@@ -31,9 +24,11 @@ function Option({ number, title, text }: Props) {
 
 const Info = styled.div`
     margin-left: 60px;
+    margin-right: 60px;
     display: flex;
     flex-direction: column;
-    width: 50%;
+    flex-basis: 400px;
+    flex-shrink: 0;
 `
 
 const InfoNumber = styled.div`
@@ -43,11 +38,11 @@ const InfoNumber = styled.div`
     font-family: "Work Sans";
 `
 
-const InfoHeader = styled.div`
+const InfoHeader = styled(Link)`
     color: #191919;
-    text-decoration: none;
     display: flex;
     align-items: center;
+    text-decoration: none;
 `
 
 const InfoTitle = styled.div`
@@ -55,15 +50,16 @@ const InfoTitle = styled.div`
     font-weight: 600;
     font-family: "Work Sans";
     margin-left: 16px;
+
 `
 
 const InfoText = styled.div`
-    margin-top: 16px;
     font-size: 18px;
     color: #7a7a7a;
     font-weight: 400;
     font-family: "Work Sans";
     text-align: left;
+  
 `
 
 export default Option
