@@ -5,8 +5,9 @@ import Home from '../pages/Home'
 import Facebook from './modules/Facebook'
 import Instagram from '../pages/Instagram'
 import Admin from './modules/Admin'
-import Privacy from './modules/Privacy'
-import NotFound from './modules/NotFound'
+import Privacy from '../pages/Privacy'
+import NotFound from '../pages/NotFound'
+import DataContextProvider from '../../provider/Data'
 
 
 type Props = {}
@@ -14,14 +15,16 @@ type Props = {}
 function Body({ }: Props) {
     return (
         <Wrapper>
-            <Routes>
-                <Route path="*" element={<NotFound />} ></Route>
-                <Route path="" element={<Home />} ></Route>
-                {/* <Route path="facebook" element={<Facebook />} ></Route> */}
-                <Route path="instagram" element={<Instagram />} ></Route>
-                <Route path="privacy" element={<Privacy />} ></Route>
-                {/* <Route path="admin" element={<Admin />} ></Route> */}
-            </Routes>
+            <DataContextProvider>
+                <Routes>
+                    <Route path="*" element={<NotFound />} ></Route>
+                    <Route path="" element={<Home />} ></Route>
+                    {/* <Route path="facebook" element={<Facebook />} ></Route> */}
+                    <Route path="instagram" element={<Instagram />} ></Route>
+                    <Route path="privacy" element={<Privacy />} ></Route>
+                    {/* <Route path="admin" element={<Admin />} ></Route> */}
+                </Routes>
+            </DataContextProvider>
         </Wrapper>
     )
 }
