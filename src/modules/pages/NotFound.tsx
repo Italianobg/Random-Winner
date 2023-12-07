@@ -1,7 +1,7 @@
 import React from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
-import titles from '../../../titles'
+import titles from '../../titles'
 
 type Props = {}
 
@@ -20,5 +20,6 @@ const Wrapper = styled.div`
     margin-top: 80px;
     display: flex;
     justify-content: center;
+    font-family: "Work Sans";
 `
 export default NotFound
