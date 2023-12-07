@@ -37,7 +37,8 @@ const Wrapper = styled.div`
     box-sizing: border-box;
     background-color: rgb(25, 25, 25);
     color: white;
-    width: 30%;
+    width: 200px;
+    height: 260px;
     border-radius: 5px;
 
     :hover{
@@ -60,7 +61,7 @@ const UserBox = styled.div`
     box-sizing: border-box;
     padding: 12px;
     align-items: center;
-
+    justify-content: space-between;
 `
 
 const Name = styled.div`
