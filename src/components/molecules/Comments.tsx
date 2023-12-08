@@ -58,6 +58,7 @@ const Content = styled.div`
             font-family: "Work Sans";
             color: black;
             font-size: 16px;
+            margin-right: 30px;
             `
 
 export default Comments

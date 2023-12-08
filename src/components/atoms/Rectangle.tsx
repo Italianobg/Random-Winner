@@ -18,7 +18,7 @@ const Wrapper = styled.div`
     width: 200px;
     rotate: 90deg;
     top: 90px;
-    left: -60px;
+    left: -90px;
     img {
         width: 100%;
     }

@@ -33,7 +33,7 @@ const Wrapper = styled.div`
 `
 
 const Profile = styled.div`
-    
+    margin-right: 30px;
 `
 
 export default Login

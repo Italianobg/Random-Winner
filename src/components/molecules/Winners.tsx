@@ -47,6 +47,7 @@ const WinnerList = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
+    margin-right: 30px;
 `
 
 export default Winners

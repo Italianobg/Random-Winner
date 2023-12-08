@@ -23,8 +23,8 @@ function Option({ number, title, text, link }: Props) {
 }
 
 const Info = styled.div`
-    margin-left: 60px;
-    margin-right: 60px;
+    margin-left: 30px;
+    margin-right: 30px;
     display: flex;
     flex-direction: column;
     flex-basis: 400px;

@@ -60,6 +60,7 @@ const Content = styled.div`
     flex-grow: 1;
     color: black;
     font-size: 16px;
+    margin-right: 30px;
 `
 
 const ConcentSelect = styled.select`

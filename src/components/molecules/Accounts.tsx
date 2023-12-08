@@ -78,6 +78,7 @@ const Content = styled.div`
     font-weight: 400;
     font-family: "Work Sans";
     display: flex;
+    margin-right: 30px;
 `
 
 const List = styled.div`
