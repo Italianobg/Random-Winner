@@ -1,19 +1,19 @@
 import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components';
-import { UserContext } from '../../../provider/Profile';
-import Accounts from '../../organism/Accounts';
-import Posts from '../../organism/Posts';
-import Settings from '../../organism/Settings';
-import Comments from '../../organism/Comments';
-import Raffle from '../../organism/Raffle';
+import { UserContext } from '../../provider/Profile';
+import Accounts from '../molecules/Accounts';
+import Posts from '../molecules/Posts';
+import Settings from '../molecules/Settings';
+import Comments from '../molecules/Comments';
+import Raffle from '../molecules/Raffle';
 import { Helmet } from 'react-helmet-async';
-import titles from '../../../titles';
-import PDFReport from './components/PDFReport';
+import titles from '../../titles';
+import PDFReport from '../molecules/PDFReport';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-import Login from '../../organism/Login';
-import Winners from '../../organism/Winners';
-import { DataContext } from '../../../provider/Data';
-import { clearData } from '../../../utils/instagram';
+import Login from '../molecules/Login';
+import Winners from '../molecules/Winners';
+import { DataContext } from '../../provider/Data';
+import { clearData } from '../../utils/instagram';
 
 type Props = {}
 

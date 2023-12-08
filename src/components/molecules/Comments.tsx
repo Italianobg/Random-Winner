@@ -20,7 +20,9 @@ function Comments({ }: Props) {
 
     useEffect(() => {
         if (user && data.selectedMediaId.length > 0 && data.selectedMediaId !== 'none') {
-            setDataData({ ...data, loadingComments: true });
+            setDataData({
+                ...data, loadingComments: true, winners: data.winners.splice(0, data.winners.length)
+            });
             // Get all comments and sets them to context variable "comments"
             getComments(data, setDataData, user, '');
             setDataData({ ...data, loadingComments: false })

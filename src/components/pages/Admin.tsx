@@ -1,6 +1,6 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import titles from '../../../titles'
+import titles from '../../titles'
 
 type Props = {}
 

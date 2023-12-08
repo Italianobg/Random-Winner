@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { UserContext } from '../../provider/Profile';
-import Logout from '../molecule/Logout';
-import FBLogin from '../molecule/FBLogin';
+import Logout from './Logout';
+import FBLogin from './FBLogin';
 import Option from '../atoms/Option';
 
 type Props = {}
@@ -13,7 +13,7 @@ function Login({ }: Props) {
 
     return (
         <Wrapper>
-            <Option number='1' title='login' text='Please login with your facebook account'></Option>
+            <Option number='1' title='login' text='login with your facebook account'></Option>
             <Profile>
                 {user.name ?
                     <Logout setUserData={setUserData} /> :
@@ -29,6 +29,7 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
+    position: relative;
 `
 
 const Profile = styled.div`

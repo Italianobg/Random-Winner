@@ -2,7 +2,7 @@ import axios from "axios";
 import { axiosClient } from "../axiosClient";
 
 
-export function getUserPages(token: string) {
+export function getUserAccounts(token: string) {
     return axiosClient.get('/me/accounts?access_token=' + token + '&fields=id,name,access_token,instagram_business_account{name,username,id,media_count,biography,followers_count,profile_picture_url}&limit=100');
 }
 

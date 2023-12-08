@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import Option from '../atoms/Option'
-import { DataContext } from '../../provider/Data'
+import { Comment, DataContext } from '../../provider/Data'
 import { UserContext } from '../../provider/Profile'
 import { getInstagramMedia } from '../../api/lib/instagram'
 
@@ -19,7 +19,7 @@ function Posts({ }: Props) {
         if (accountId.length > 0) {
             setDataData({ ...data, loadingMedia: true })
             getInstagramMedia(accountId, user.accessToken).then((res) => {
-                setDataData({ ...data, loadingMedia: false, media: res.data.data, winners: [] });
+                setDataData({ ...data, loadingMedia: false, media: res.data.data, selectedMediaId: '' });
             })
         }
     }, [data.selectedInstagramAccount])

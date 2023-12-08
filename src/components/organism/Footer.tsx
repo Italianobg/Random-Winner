@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import DonateButton from './components/DonateButton'
+import DonateButton from '../atoms/DonateButton'
 
 type Props = {}
 

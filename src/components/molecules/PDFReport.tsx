@@ -1,7 +1,7 @@
 import React from 'react'
 import { Page, Font, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer';
 import logo from '../../../../assets/images/RandomeR Logo.png';
-import { getCurrentDate } from '../utils';
+import { getCurrentDate } from '../../utils/common';
 
 type Props = { selectedInstagramAccount: any }
 

@@ -14,7 +14,7 @@ function Winner({ number, name, text }: Props) {
             <WinnerBox>
                 {number ? <Number># {number}</Number> : ''}
                 <Name to={`https://instagram.com/${name}`}>@{name}</Name>
-                <Text>{text}</Text>
+                <Text>{text.length > 160 ? text.slice(0, 160) + '...' : text}</Text>
             </WinnerBox>
         </Wrapper>
     )

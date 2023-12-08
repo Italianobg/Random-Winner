@@ -46,13 +46,13 @@ function Accounts({ }: Props) {
                         loadingInstagramAccounts ? 'Loading' : <List>
                             {
                                 instagramAccounts.length > 0 ?
-                                    <span>{data.instagramAccounts.map((instagramAccount: any) => {
+                                    <>{data.instagramAccounts.map((instagramAccount: any) => {
                                         return <Account
                                             key={instagramAccount.instagram_business_account.id}
                                             instagramUser={instagramAccount}
                                             selectedId={selectedInstagramAccountId}
                                         />
-                                    })}</span>
+                                    })}</>
                                     :
                                     <p>No Linked Instagram Pages</p>
                             }
@@ -78,17 +78,17 @@ const Content = styled.div`
     font-weight: 400;
     font-family: "Work Sans";
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 20px;
 `
 
 const List = styled.div`
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
     flex-grow: 1;
     gap: 7px;
     color: black;
+    gap: 20px;
 `
 
 export default Accounts

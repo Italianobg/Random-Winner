@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Instruction } from '../Body/modules/common.styled'
+import { Instruction } from '../../assets/css/common.styled'
 import { DataContext } from '../../provider/Data'
 
 type Props = {}

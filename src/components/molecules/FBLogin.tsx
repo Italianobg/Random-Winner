@@ -1,13 +1,11 @@
 import React from 'react'
 import { LoginSocialFacebook } from 'reactjs-social-login';
-import { FacebookLoginButton } from 'react-social-login-buttons';
 import { addUser, getUserByID } from '../../api/firestore';
-import styled from 'styled-components';
 import Button from '../atoms/Button';
 
 type Props = { user: any, setUserData: Function }
 
-function FBLogin({ user, setUserData }: Props) {
+function FBLogin({ setUserData }: Props) {
     return (
         <LoginSocialFacebook
             appId='1355230801924985'
@@ -16,7 +14,6 @@ function FBLogin({ user, setUserData }: Props) {
                 let { userID } = res.data;
                 const fetchUserData = async () => {
                     const userDB = await getUserByID(userID);
-
                     if (userDB.length > 0) {
                         let userData: any = { ...userDB[0].data(), ...res.data };
                         setUserData(userData);

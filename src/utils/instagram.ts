@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import { getMediaComments } from "../api/lib/instagram";
-import { removeDuplicates } from "../modules/pages/Instagram/utils";
+import { removeDuplicates } from "./common";
 import { Comment, Data } from "../provider/Data";
 import { Profile } from "../provider/Profile";
 

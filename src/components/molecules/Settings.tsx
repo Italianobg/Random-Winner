@@ -1,8 +1,13 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
-import { Instruction } from '../Body/modules/common.styled'
+import { Instruction } from '../../assets/css/common.styled'
 import Option from '../atoms/Option'
 import { DataContext } from '../../provider/Data'
+
+
+// TODO - Users should have liked the post
+// TODO - Filter comments by mentions / tagged friends
+// TODO - Filter comments by words / hash tags
 
 type Props = {
 }

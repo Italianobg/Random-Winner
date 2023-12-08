@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { generateRandom } from '../pages/Instagram/utils';
+import { generateRandom } from '../../utils/common';
 import Option from '../atoms/Option';
 import Button from '../atoms/Button';
 import { Comment, DataContext } from '../../provider/Data';

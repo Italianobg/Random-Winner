@@ -1,8 +1,8 @@
 import './utils/firebase';
 import UserContextProvider from "./provider/Profile";
-import Header from "./modules/Header";
-import Body from "./modules/Body";
-import Footer from "./modules/Footer";
+import Header from "./components/organism/Header";
+import Body from "./components/organism/Body";
+import Footer from "./components/organism/Footer";
 import styled from "styled-components";
 import grunge1 from "./assets/images/grunge1.svg"
 import grunge2 from "./assets/images/grunge2.svg"
@@ -53,19 +53,10 @@ const Wrapper = styled.div`
     flex-direction: column;
     position: relative;
 
-    .rectangle,
     .line1,
     .line2,
     .line3{
       position: absolute;
-    }
-
-    .rectangle{
-        position: absolute;
-        width: 185px;
-        left: -50px;
-        top: 50%  ;
-        rotate: 90deg;
     }
 
     .line1{

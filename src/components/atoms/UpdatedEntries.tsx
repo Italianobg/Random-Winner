@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Instruction } from '../Body/modules/common.styled'
+import { Instruction } from '../../assets/css/common.styled'
 import { DataContext } from '../../provider/Data'
 import { applySettings } from '../../utils/instagram'
-import { removeDuplicates } from '../pages/Instagram/utils'
+import { removeDuplicates } from '../../utils/common'
 
 type Props = {}
 
