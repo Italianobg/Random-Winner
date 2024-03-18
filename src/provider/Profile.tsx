@@ -1,13 +1,8 @@
-import React, { useState, createContext, useEffect, useCallback } from 'react';
+import React, { useState, createContext, useCallback } from 'react';
 
 export interface Profile {
     accessToken: string
-    data_access_expiration_time: number
-    email: string
-    expiresIn: number
     first_name: string
-    grantedScopes: string
-    graphDomain: string
     id: string
     last_name: string
     name: string
@@ -19,34 +14,30 @@ export interface Profile {
         width: number
     }
     short_name: string
-    signedRequest: string
-    userID: string
 }
 
 interface User {
-    user: Profile;
-    setUserData(user: Profile): void;
+    user: Profile | null;
+    setUserData(user: Profile | null): void;
 }
 
 export const UserContext = createContext<User>({
-    user: {} as Profile,
+    user: null,
     setUserData: () => { }
 });
 
 function UserContextProvider({ children }: { children: any }) {
 
-    const [user, setUser] = useState({} as Profile);
+    const [user, setUser] = useState<Profile | null>(null);
 
-    const setUserData = (user: Profile) => { setUser(user) };
+    const setUserData = (user: Profile | null) => {
+        setUser(user)
+    };
 
     const contextValue = {
         user: user,
         setUserData: useCallback((user: Profile) => setUserData(user), [])
     };
-
-    useEffect(() => {
-
-    }, []);
 
     return (
         <UserContext.Provider value={contextValue}>
