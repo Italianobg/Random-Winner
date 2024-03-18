@@ -16,7 +16,7 @@ function Accounts({ }: Props) {
     let { instagramAccounts, loadingInstagramAccounts, selectedInstagramAccountId } = data;
 
     useEffect(() => {
-        if (user.id) {
+        if (user) {
             setDataData({ ...data, loadingInstagramAccounts: true });
             getUserAccounts(user.accessToken).then((res) => {
                 let pages: Object[] = getAccounts(res);
@@ -40,8 +40,8 @@ function Accounts({ }: Props) {
     return (
         <Wrapper>
             <Option number='2' title='instagram accounts' text='select your instagram account' />
-            {user.accessToken === undefined ?
-                '' : <Content>
+            {user ?
+                <Content>
                     {
                         loadingInstagramAccounts ? 'Loading' : <List>
                             {
@@ -59,6 +59,7 @@ function Accounts({ }: Props) {
                         </List>
                     }
                 </Content>
+                : ''
             }
         </Wrapper>
     )
