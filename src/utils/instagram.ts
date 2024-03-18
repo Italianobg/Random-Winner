@@ -19,36 +19,54 @@ function getInstagramAccounts(pages: Object[]): Object[] {
   return instagramPages;
 }
 
-function getComments(
+async function getAllComments(
   data: Data,
   setDataData: Function,
   user: Profile,
   after: string
 ) {
-  getMediaComments(data.selectedMediaId, user.accessToken, after).then(
-    (res: any) => {
-      //Check if there are more results/paging/ and if so calls the function again
-      if (res.data.hasOwnProperty("paging") && res.data.paging.cursors.after) {
-        getComments(
-          data,
-          setDataData,
-          user,
-          "&after=" + res.data.paging.cursors.after
-        );
-      }
-      // Format comments data and add additional variables
-      let comments: Comment[] = formatComments(res.data.data);
-      let commentsCounter = getCommentsCount(comments);
-      let repliesCounter = getRepliesCount(comments);
-      let uniqueUserCounter = getUniqueUserCount(comments);
+  let comments: Comment[] = await getComments(data, setDataData, user, after);
 
-      setDataData({
-        ...data,
-        comments,
-        commentsStats: { commentsCounter, repliesCounter, uniqueUserCounter },
-      });
-    }
+  // Format comments data and add additional variables
+  comments = formatComments(comments);
+  console.log(comments);
+  let commentsCounter = getCommentsCount(comments);
+  let repliesCounter = getRepliesCount(comments);
+  let uniqueUserCounter = getUniqueUserCount(comments);
+  setDataData({
+    ...data,
+    comments,
+    commentsStats: { commentsCounter, repliesCounter, uniqueUserCounter },
+  });
+}
+
+async function getComments(
+  data: Data,
+  setDataData: Function,
+  user: Profile,
+  after: string
+): Promise<[]> {
+  const response = await getMediaComments(
+    data.selectedMediaId,
+    user.accessToken,
+    after
   );
+  const results = response.data;
+  console.log(results);
+
+  //Check if there are more results/paging/ and if so calls the function again
+  if (results.hasOwnProperty("paging") && results.paging.cursors.after) {
+    return results.data.concat(
+      await getComments(
+        data,
+        setDataData,
+        user,
+        "&after=" + results.paging.cursors.after
+      )
+    );
+  } else {
+    return results.data;
+  }
 }
 
 function formatComments(data: any): Comment[] {
@@ -244,6 +262,7 @@ function clearData(setData: Function): void {
 export {
   getAccounts,
   getInstagramAccounts,
+  getAllComments,
   getComments,
   applySettings,
   clearData,
