@@ -26,7 +26,7 @@ function Account({ instagramUser, selectedId }: Props) {
         <Wrapper className={instagramUser.instagram_business_account.id === selectedId ? 'selected' : ''}>
             <UserBox key={instagramUser.instagram_business_account.id} onClick={() => selectAccount(instagramUser.instagram_business_account.id)}>
                 <Name>{instagramUser.instagram_business_account.name}</Name>
-                <Image><img src={instagramUser.instagram_business_account.profile_picture_url} alt="account" /></Image>
+                {instagramUser.instagram_business_account.profile_picture_url ? <Image><img src={instagramUser.instagram_business_account.profile_picture_url} alt="account" /></Image> : ''}
                 <Followers>Followers: {instagramUser.instagram_business_account.followers_count}</Followers>
             </UserBox>
         </Wrapper>
