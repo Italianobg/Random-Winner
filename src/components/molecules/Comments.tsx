@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Option from '../atoms/Option'
 import { DataContext } from '../../provider/Data'
 import { UserContext } from '../../provider/Profile'
-import { getComments } from '../../utils/instagram'
+import { getAllComments, getComments } from '../../utils/instagram'
 import CurrentEntries from '../atoms/CurrentEntries'
 import UpdatedEntries from '../atoms/UpdatedEntries'
 import Engagement from '../atoms/Engagement'
@@ -24,7 +24,7 @@ function Comments({ }: Props) {
                 ...data, loadingComments: true, winners: data.winners.splice(0, data.winners.length)
             });
             // Get all comments and sets them to context variable "comments"
-            getComments(data, setDataData, user, '');
+            getAllComments(data, setDataData, user, '');
             setDataData({ ...data, loadingComments: false })
         }
     }, [selectedMediaId])
