@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import Option from '../atoms/Option'
-import { Comment, DataContext } from '../../provider/Data'
+import { DataContext } from '../../provider/Data'
 import { UserContext } from '../../provider/Profile'
 import { getInstagramMedia } from '../../api/lib/instagram'
 
@@ -16,7 +16,7 @@ function Posts({ }: Props) {
     const media = data.media;
 
     useEffect(() => {
-        if (accountId.length > 0) {
+        if (accountId.length > 0 && user) {
             setDataData({ ...data, loadingMedia: true })
             getInstagramMedia(accountId, user.accessToken).then((res) => {
                 setDataData({ ...data, loadingMedia: false, media: res.data.data, selectedMediaId: '' });
@@ -37,7 +37,7 @@ function Posts({ }: Props) {
                                         setDataData({ ...data, selectedMediaId: e.target.value })
                                     }}><option key='select' value='none' >Select Post</option>
                                         {media.map((post: any) => {
-                                            return <option key={post.id} value={post.id} >{post.caption.slice(0, 70) + '...'}</option >
+                                            return <option key={post.id} value={post.id} >{post.caption?.slice(0, 70) || "No caption" + '...'}</option >
                                         })}</ConcentSelect>
                                     : 'No Posts'}
                             </div>
